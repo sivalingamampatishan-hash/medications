@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Physician Medication Map — Battle Creek, MI</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f4f0;
+    --bg3: #eeece6;
+    --text: #1a1a18;
+    --text2: #5a5a56;
+    --text3: #8a8a84;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --blue-bg: #E6F1FB; --blue-bd: #185FA5; --blue-tx: #0C447C;
+    --teal-bg: #E1F5EE; --teal-bd: #0F6E56; --teal-tx: #085041;
+    --purple-bg: #EEEDFE; --purple-bd: #534AB7; --purple-tx: #3C3489;
+    --amber-bg: #FAEEDA; --amber-bd: #854F0B; --amber-tx: #633806;
+    --coral-bg: #FAECE7; --coral-bd: #993C1D; --coral-tx: #711300;
+    --green-bg: #EAF3DE; --green-bd: #3B6D11; --green-tx: #27500A;
+    --pink-bg: #FBEAF0; --pink-bd: #993556; --pink-tx: #72243E;
+    --gray-bg: #F1EFE8; --gray-bd: #5F5E5A; --gray-tx: #2C2C2A;
+    --red-bg: #FCEBEB; --red-bd: #A32D2D; --red-tx: #501313;
+    --darkteal-bg: #E1F5EE; --darkteal-bd: #085041; --darkteal-tx: #04342C;
+    --l1-bg: #E6F1FB; --l1-c: #0C447C; --l1-bd: #185FA5;
+    --l2-bg: #FAEEDA; --l2-c: #633806; --l2-bd: #BA7517;
+    --l3-bg: #FBEAF0; --l3-c: #72243E; --l3-bd: #993556;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    --radius: 8px; --radius-lg: 12px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a; --bg2: #252523; --bg3: #2e2e2b;
+      --text: #e8e6df; --text2: #a0a09a; --text3: #6a6a64;
+      --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.18);
+      --blue-bg: #0C447C; --blue-bd: #85B7EB; --blue-tx: #B5D4F4;
+      --teal-bg: #085041; --teal-bd: #5DCAA5; --teal-tx: #9FE1CB;
+      --purple-bg: #3C3489; --purple-bd: #AFA9EC; --purple-tx: #CECBF6;
+      --amber-bg: #633806; --amber-bd: #EF9F27; --amber-tx: #FAC775;
+      --coral-bg: #711300; --coral-bd: #F0997B; --coral-tx: #F5C4B3;
+      --green-bg: #27500A; --green-bd: #97C459; --green-tx: #C0DD97;
+      --pink-bg: #72243E; --pink-bd: #ED93B1; --pink-tx: #F4C0D1;
+      --gray-bg: #2C2C2A; --gray-bd: #B4B2A9; --gray-tx: #D3D1C7;
+      --red-bg: #501313; --red-bd: #F09595; --red-tx: #F7C1C1;
+      --darkteal-bg: #04342C; --darkteal-bd: #5DCAA5; --darkteal-tx: #9FE1CB;
+      --l1-bg: #0C447C; --l1-c: #B5D4F4; --l1-bd: #85B7EB;
+      --l2-bg: #633806; --l2-c: #FAC775; --l2-bd: #EF9F27;
+      --l3-bg: #72243E; --l3-c: #F4C0D1; --l3-bd: #ED93B1;
+    }
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px 12px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .page-header h1 { font-size: 15px; font-weight: 600; color: var(--text); }
+  .page-header p { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .source-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 6px; padding: 2px 9px; border-radius: 20px;
+    font-size: 10px; font-weight: 600;
+    background: var(--blue-bg); color: var(--blue-tx);
+    border: 1px solid var(--blue-bd);
+  }
+
+  .legend-bar {
+    display: flex; flex-wrap: wrap; gap: 4px 14px;
+    padding: 8px 20px; border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .leg { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text2); }
+  .leg-sq { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+
+  .controls {
+    display: flex; gap: 8px; padding: 9px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg); flex-wrap: wrap; align-items: center;
+  }
+  .controls input[type="text"] {
+    flex: 1; min-width: 150px; padding: 7px 11px;
+    border-radius: var(--radius); border: 1px solid var(--border2);
+    background: var(--bg2); color: var(--text);
+    font-size: 12px; font-family: var(--font); outline: none;
+    transition: border-color 0.15s;
+  }
+  .controls input[type="text"]:focus { border-color: #185FA5; }
+  .controls select {
+    padding: 7px 10px; border-radius: var(--radius);
+    border: 1px solid var(--border2); background: var(--bg2);
+    color: var(--text); font-size: 12px; font-family: var(--font);
+    cursor: pointer;
+  }
+
+  .tabs {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    padding: 8px 20px; border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .tab {
+    padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 500;
+    cursor: pointer; border: 1px solid var(--border);
+    background: var(--bg2); color: var(--text2);
+    transition: all 0.12s; white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); border-color: var(--border2); }
+  .tab.active { color: #fff; border-color: transparent; }
+
+  .body { padding: 12px 20px 40px; }
+
+  .section { margin-bottom: 22px; }
+  .sec-hdr {
+    display: flex; align-items: center; gap: 7px;
+    margin-bottom: 9px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .sec-title { font-size: 11px; font-weight: 600; }
+  .sec-count { font-size: 10px; color: var(--text3); }
+
+  .cond-card {
+    margin-bottom: 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .cond-hdr { display: flex; align-items: stretch; }
+  .cond-left {
+    padding: 8px 10px; min-width: 196px; max-width: 196px; flex-shrink: 0;
+    border-right: 1px solid var(--border);
+  }
+  .cond-name { font-size: 11px; font-weight: 600; line-height: 1.3; }
+  .cond-sub { font-size: 9px; color: var(--text3); margin-top: 2px; line-height: 1.35; }
+  .cond-drugs {
+    display: flex; flex-wrap: wrap; gap: 3px;
+    padding: 7px 8px; flex: 1; align-items: flex-start;
+    background: var(--bg2);
+  }
+
+  .dpill {
+    padding: 3px 8px; border-radius: 20px;
+    font-size: 10px; font-weight: 600; cursor: pointer;
+    border: 1px solid transparent; transition: transform 0.1s;
+    white-space: nowrap; position: relative; line-height: 1.5;
+    user-select: none;
+  }
+  .dpill:hover { transform: scale(1.05); }
+  .ldot {
+    position: absolute; top: -3px; right: -3px;
+    width: 8px; height: 8px; border-radius: 50%;
+    font-size: 6px; line-height: 8px; text-align: center;
+    color: #fff; font-weight: 800; pointer-events: none;
+  }
+
+  .detail-wrap {
+    display: none; padding: 10px 12px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .detail-wrap.open { display: block; }
+  .d-close {
+    float: right; cursor: pointer; font-size: 16px; line-height: 1;
+    color: var(--text2); margin-left: 8px;
+    background: none; border: none; font-family: var(--font);
+  }
+  .d-name { font-size: 13px; font-weight: 600; margin-bottom: 5px; color: var(--text); }
+  .d-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 12px;
+    font-size: 10px; font-weight: 600; margin-bottom: 9px; border: 1px solid;
+  }
+  .d-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .d-item {}
+  .d-label {
+    font-size: 9px; color: var(--text3); text-transform: uppercase;
+    letter-spacing: 0.05em; margin-bottom: 3px; font-weight: 600;
+  }
+  .d-val { font-size: 11px; line-height: 1.55; color: var(--text); }
+  .d-dose { font-family: var(--mono); font-size: 10px; color: var(--text); }
+  .d-full { grid-column: 1 / -1; }
+  .trials { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+  .trial-tag {
+    font-size: 9px; padding: 1px 6px; border-radius: 10px;
+    background: var(--bg2); border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+  .flags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+  .flag-tag {
+    font-size: 9px; padding: 1px 6px; border-radius: 10px;
+    border: 1px solid; font-weight: 500;
+  }
+  .d-ref {
+    font-size: 9px; color: var(--text3); margin-top: 8px;
+    border-top: 1px solid var(--border); padding-top: 6px;
+    line-height: 1.6;
+  }
+
+  .empty {
+    text-align: center; padding: 40px 20px;
+    color: var(--text2); font-size: 13px;
+  }
+
+  @media (max-width: 600px) {
+    .cond-left { min-width: 130px; max-width: 130px; }
+    .d-grid { grid-template-columns: 1fr; }
+    .d-full { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Family Physician Medication Map — Battle Creek, MI</h1>
+  <p>Open Evidence · source-attributed · tap any drug for dose, trials &amp; citations</p>
+  <div class="source-pill">Open Evidence &middot; NEJM &middot; JAMA &middot; Lancet &middot; ACC/AHA &middot; IDSA &middot; GINA &middot; GOLD &middot; ADA &middot; CDC &middot; ACR &middot; AGS Beers</div>
+</header>
+
+<div class="legend-bar">
+  <div class="leg"><div class="leg-sq" style="background:#185FA5"></div>Cardiovascular</div>
+  <div class="leg"><div class="leg-sq" style="background:#0F6E56"></div>Diabetes/metabolic</div>
+  <div class="leg"><div class="leg-sq" style="background:#534AB7"></div>Respiratory</div>
+  <div class="leg"><div class="leg-sq" style="background:#854F0B"></div>Mental health</div>
+  <div class="leg"><div class="leg-sq" style="background:#993C1D"></div>Pain/MSK</div>
+  <div class="leg"><div class="leg-sq" style="background:#3B6D11"></div>GI/liver</div>
+  <div class="leg"><div class="leg-sq" style="background:#993556"></div>Endocrine/women's</div>
+  <div class="leg"><div class="leg-sq" style="background:#5F5E5A"></div>Dermatology</div>
+  <div class="leg"><div class="leg-sq" style="background:#A32D2D"></div>Infections</div>
+  <div class="leg"><div class="leg-sq" style="background:#085041"></div>Urology/kidney</div>
+  <div class="leg" style="margin-left:8px">Blue dot=1st &middot; Amber=2nd &middot; Pink=3rd line</div>
+</div>
+
+<div class="controls">
+  <input type="text" id="srch" placeholder="Search drug or condition..." oninput="render()">
+  <select id="lf" onchange="render()">
+    <option value="all">All lines</option>
+    <option value="1">1st line only</option>
+    <option value="2">2nd line only</option>
+    <option value="3">3rd line only</option>
+  </select>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div class="body" id="body"></div>
+
+<script>
+const CATS=[
+  {id:'cardio',ci:0,label:'Cardiovascular',dot:'#185FA5',bg:'var(--blue-bg)',bd:'var(--blue-bd)',tx:'var(--blue-tx)'},
+  {id:'dm',ci:1,label:'Diabetes/metabolic',dot:'#0F6E56',bg:'var(--teal-bg)',bd:'var(--teal-bd)',tx:'var(--teal-tx)'},
+  {id:'resp',ci:2,label:'Respiratory',dot:'#534AB7',bg:'var(--purple-bg)',bd:'var(--purple-bd)',tx:'var(--purple-tx)'},
+  {id:'mh',ci:3,label:'Mental health',dot:'#854F0B',bg:'var(--amber-bg)',bd:'var(--amber-bd)',tx:'var(--amber-tx)'},
+  {id:'pain',ci:4,label:'Pain/MSK',dot:'#993C1D',bg:'var(--coral-bg)',bd:'var(--coral-bd)',tx:'var(--coral-tx)'},
+  {id:'gi',ci:5,label:'GI/liver',dot:'#3B6D11',bg:'var(--green-bg)',bd:'var(--green-bd)',tx:'var(--green-tx)'},
+  {id:'endo',ci:6,label:"Endocrine/women's",dot:'#993556',bg:'var(--pink-bg)',bd:'var(--pink-bd)',tx:'var(--pink-tx)'},
+  {id:'derm',ci:7,label:'Dermatology',dot:'#5F5E5A',bg:'var(--gray-bg)',bd:'var(--gray-bd)',tx:'var(--gray-tx)'},
+  {id:'infect',ci:8,label:'Infections',dot:'#A32D2D',bg:'var(--red-bg)',bd:'var(--red-bd)',tx:'var(--red-tx)'},
+  {id:'uro',ci:9,label:'Urology/kidney',dot:'#085041',bg:'var(--darkteal-bg)',bd:'var(--darkteal-bd)',tx:'var(--darkteal-tx)'},
+];
+
+const L=[
+  {bg:'var(--l1-bg)',c:'var(--l1-c)',bd:'var(--l1-bd)',dot:'#185FA5'},
+  {bg:'var(--l2-bg)',c:'var(--l2-c)',bd:'var(--l2-bd)',dot:'#BA7517'},
+  {bg:'var(--l3-bg)',c:'var(--l3-c)',bd:'var(--l3-bd)',dot:'#993556'},
+];
+
+const DATA=[
+{cat:'cardio',condition:'Essential hypertension',sub:'Target <130/80 (ACC/AHA 2017); 4 equally first-line classes',drugs:[
+{n:'Chlorthalidone',l:1,cls:'Thiazide-like diuretic',dose:'12.5–25 mg once daily',note:'Preferred thiazide-like due to longer half-life; SBP reduction ~14 mmHg vs placebo. Monitor electrolytes, hyperuricemia, hyperglycemia.',trials:['ALLHAT','SPRINT'],flags:['Preferred over HCTZ','Monitor electrolytes'],ref:'Carey RM et al. JAMA 2022;328(18):1849. Brouwers S et al. Lancet 2021;398:249.'},
+{n:'Lisinopril',l:1,cls:'ACE inhibitor',dose:'10–40 mg once daily',note:'SBP ~12 mmHg reduction. Cough 10–15%. Contraindicated in pregnancy, bilateral RAS, hx angioedema. Preferred in DM/CKD.',trials:['HOPE','SPRINT'],flags:['Avoid pregnancy','Angioedema risk'],ref:'Carey RM et al. JAMA 2022;328(18):1849.'},
+{n:'Losartan',l:1,cls:'ARB',dose:'50–100 mg once or twice daily',note:'SBP ~11 mmHg. No cough. Do NOT combine with ACEi. Contraindicated in pregnancy.',trials:['LIFE'],flags:['ACEi cough alternative','Avoid pregnancy'],ref:'Carey RM et al. JAMA 2022;328(18):1849.'},
+{n:'Amlodipine',l:1,cls:'CCB dihydropyridine',dose:'2.5–10 mg once daily',note:'SBP ~16 mmHg. Preferred in elderly. Peripheral edema dose-dependent.',trials:['ACCOMPLISH','ALLHAT'],flags:['Elderly preferred'],ref:'Carey RM et al. JAMA 2022;328(18):1849.'},
+{n:'Hydrochlorothiazide',l:1,cls:'Thiazide diuretic',dose:'12.5–50 mg once daily',note:'SBP ~14 mmHg. Widely available, generic cheap. Monitor electrolytes. Avoid severe hyponatremia/hypokalemia.',trials:['ALLHAT'],flags:['Monitor electrolytes'],ref:'Carey RM et al. JAMA 2022;328(18):1849.'},
+{n:'Metoprolol succinate',l:2,cls:'Beta-blocker',dose:'50–200 mg once daily',note:'First-line only if IHD or HF present. SBP ~10 mmHg. Avoid high-grade AV block, decompensated HF, asthma.',trials:['MERIT-HF'],flags:['Add if IHD/HF','Avoid asthma'],ref:'Carey RM et al. JAMA 2022;328(18):1849.'},
+{n:'Spironolactone',l:2,cls:'MRA (aldosterone antagonist)',dose:'25–100 mg once daily',note:'SBP ~22 mmHg. Preferred resistant HTN 4th agent (PATHWAY-2). Monitor K+/creatinine.',trials:['PATHWAY-2'],flags:['Resistant HTN','Monitor K+'],ref:'Carey RM et al. JAMA 2022;328(18):1849.'},
+{n:'Clonidine',l:3,cls:'Central alpha-2 agonist',dose:'0.1–0.8 mg twice daily',note:'Rebound HTN if stopped abruptly. Sedating. Third-line only.',trials:[],flags:['Rebound risk on DC'],ref:'Clarke SL. Am Fam Physician 2023;108(4):352.'},
+]},
+{cat:'cardio',condition:'HFrEF — GDMT quadruple therapy',sub:'LVEF <40%; 4 pillars; 73% relative mortality reduction vs older 2-drug Rx',drugs:[
+{n:'Sacubitril/valsartan',l:1,cls:'ARNI',dose:'49/51 mg BID → 97/103 mg BID; 36h washout from ACEi',note:'PARADIGM-HF: 20% reduction in CV death/HF hospitalization vs enalapril. Preferred over ACEi. Contraindicated in angioedema hx, pregnancy.',trials:['PARADIGM-HF'],flags:['Preferred over ACEi'],ref:'Maddox TM et al. JACC 2024;83(15):1444.'},
+{n:'Carvedilol',l:1,cls:'Beta-blocker (non-selective)',dose:'3.125 mg BID → 25–50 mg BID; titrate q1–2wk',note:'COPERNICUS trial. Initiate only when euvolemic. Do NOT start in decompensated HF.',trials:['COPERNICUS'],flags:['Start euvolemic only'],ref:'Maddox TM et al. JACC 2024;83(15):1444.'},
+{n:'Metoprolol succinate',l:1,cls:'Beta-blocker (beta-1 selective)',dose:'12.5 mg daily → 200 mg daily',note:'MERIT-HF. Alternative to carvedilol. Bisoprolol also evidence-based.',trials:['MERIT-HF'],flags:['Alternative BB'],ref:'Maddox TM et al. JACC 2024;83(15):1444.'},
+{n:'Spironolactone',l:1,cls:'MRA',dose:'12.5–25 mg daily → 25–50 mg daily',note:'RALES: mortality benefit. Monitor K+/creatinine 1 week after each dose change. Contraindicated K+>5.0 or eGFR<30.',trials:['RALES','EPHESUS'],flags:['K+ monitoring critical'],ref:'Maddox TM et al. JACC 2024;83(15):1444.'},
+{n:'Dapagliflozin',l:1,cls:'SGLT2 inhibitor',dose:'10 mg once daily (fixed)',note:'DAPA-HF: 26% reduction CV death/HF hospitalization. Benefits within 12 days. Requires eGFR ≥25.',trials:['DAPA-HF'],flags:['eGFR ≥25 required'],ref:'Maddox TM et al. JACC 2024;83(15):1444.'},
+{n:'Empagliflozin',l:1,cls:'SGLT2 inhibitor',dose:'10 mg once daily (fixed)',note:'EMPEROR-Reduced. Benefits regardless of DM status. Genital mycotic infections.',trials:['EMPEROR-Reduced'],flags:['Non-DM benefit'],ref:'Maddox TM et al. JACC 2024;83(15):1444.'},
+{n:'Furosemide',l:1,cls:'Loop diuretic (symptom control)',dose:'20–80 mg twice daily; titrate to dry weight',note:'Symptom management only — no mortality benefit. Daily weights. Monitor K+/Mg2+.',trials:[],flags:['No mortality benefit','Symptom only'],ref:'Maddox TM et al. JACC 2024;83(15):1444.'},
+{n:'Ivabradine',l:2,cls:'HCN channel blocker',dose:'2.5–7.5 mg twice daily',note:'SHIFT: reduces HF hospitalization. Only if HR ≥70 on max BB, sinus rhythm only.',trials:['SHIFT'],flags:['HR ≥70 sinus only'],ref:'Maddox TM et al. JACC 2024;83(15):1444.'},
+]},
+{cat:'cardio',condition:'Atrial fibrillation',sub:'2023 ACC/AHA/ACCP/HRS guideline; CHA2DS2-VASc for anticoagulation',drugs:[
+{n:'Apixaban',l:1,cls:'DOAC — Factor Xa inhibitor',dose:'5 mg BID (2.5 mg BID if ≥2: age≥80, wt≤60kg, Cr≥1.5)',note:'ARISTOTLE: lower stroke + lower major bleeding vs warfarin. Preferred DOAC.',trials:['ARISTOTLE'],flags:['Preferred DOAC'],ref:'Joglar JA et al. JACC 2024;83(1):109.'},
+{n:'Rivaroxaban',l:1,cls:'DOAC — Factor Xa inhibitor',dose:'20 mg once daily with dinner',note:'ROCKET-AF. Take with evening meal. Once-daily convenience.',trials:['ROCKET-AF'],flags:['Take with food'],ref:'Joglar JA et al. JACC 2024;83(1):109.'},
+{n:'Dabigatran',l:2,cls:'DOAC — direct thrombin inhibitor',dose:'150 mg BID (110 mg BID if age>80 or high bleed risk)',note:'RE-LY. Idarucizumab antidote. More GI bleeds than warfarin. Avoid CrCl<15.',trials:['RE-LY'],flags:['Antidote: idarucizumab'],ref:'Joglar JA et al. JACC 2024;83(1):109.'},
+{n:'Warfarin',l:2,cls:'Vitamin K antagonist',dose:'Target INR 2–3',note:'Reserved for: mechanical heart valves, ESRD, APLA syndrome.',trials:[],flags:['Mechanical valve/APLA only'],ref:'Joglar JA et al. JACC 2024;83(1):109.'},
+{n:'Metoprolol tartrate',l:1,cls:'Beta-blocker (rate control)',dose:'25–100 mg BID; target resting HR 60–80',note:'First-line rate control. Avoid in decompensated HF.',trials:[],flags:['Rate control 1st line'],ref:'Joglar JA et al. JACC 2024;83(1):109.'},
+{n:'Amiodarone',l:2,cls:'Class III antiarrhythmic',dose:'400 mg BID ×4wk → 200 mg daily maintenance',note:'Most effective antiarrhythmic. Extensive toxicity: thyroid, pulmonary, hepatic, corneal. Monitor q6mo.',trials:[],flags:['Most effective','Multi-organ toxicity'],ref:'Joglar JA et al. JACC 2024;83(1):109.'},
+]},
+{cat:'cardio',condition:'Post-MI / ACS secondary prevention',sub:'DAPT + high-intensity statin + BB + ACEi; 2022 JAMA review',drugs:[
+{n:'Aspirin 81 mg',l:1,cls:'Antiplatelet — COX-1 inhibitor',dose:'81 mg daily (lifelong)',note:'Cornerstone secondary prevention. 20–30% reduction recurrent events. Add PPI if GI risk.',trials:['ISIS-2'],flags:['Lifelong','Add PPI if GI risk'],ref:'Bhatt DL et al. JAMA 2022;327(7):662.'},
+{n:'Ticagrelor',l:1,cls:'P2Y12 inhibitor (direct-acting)',dose:'90 mg BID × 12 months',note:'PLATO: superior to clopidogrel in ACS. Dyspnea SE. Stop 5 days pre-CABG.',trials:['PLATO'],flags:['Superior to clopidogrel','Dyspnea SE'],ref:'Bhatt DL et al. JAMA 2022;327(7):662.'},
+{n:'Clopidogrel',l:1,cls:'P2Y12 inhibitor (prodrug)',dose:'75 mg daily × 12 months',note:'CYP2C19 polymorphism reduces efficacy ~30%.',trials:['CURE','TRITON-TIMI 38'],flags:['CYP2C19 variable'],ref:'Gallone G et al. JACC 2018;72:2886.'},
+{n:'Atorvastatin',l:1,cls:'High-intensity statin',dose:'40–80 mg daily; target LDL <70 mg/dL',note:'TNT + PROVE-IT: 30% reduction events. LDL-C reduction >50%.',trials:['TNT','PROVE-IT'],flags:['LDL >50% reduction'],ref:'Bhatt DL et al. JAMA 2022;327(7):662.'},
+{n:'Metoprolol succinate',l:1,cls:'Beta-blocker',dose:'25–200 mg daily; HR target 55–65',note:'Post-MI mortality benefit. Indefinite if LV dysfunction.',trials:['MERIT-HF'],flags:['Post-MI mortality benefit'],ref:'Bhatt DL et al. JAMA 2022;327(7):662.'},
+{n:'Lisinopril',l:1,cls:'ACE inhibitor',dose:'5–40 mg daily',note:'HOPE: CV death reduction. Important with LV dysfunction, DM, CKD.',trials:['HOPE','EUROPA'],flags:['LV dysfunction/DM/CKD'],ref:'Bhatt DL et al. JAMA 2022;327(7):662.'},
+{n:'Ezetimibe',l:2,cls:'Cholesterol absorption inhibitor',dose:'10 mg daily',note:'IMPROVE-IT: 2% absolute benefit added to statin post-ACS.',trials:['IMPROVE-IT'],flags:['Add if LDL not at goal'],ref:'Blumenthal RS et al. JACC 2026.'},
+{n:'Evolocumab',l:3,cls:'PCSK9 inhibitor (mAb)',dose:'140 mg SC q2wk or 420 mg SC monthly',note:'FOURIER: 15% CV event reduction. LDL-C reduction 45–64%.',trials:['FOURIER'],flags:['Very high-risk ASCVD'],ref:'Blumenthal RS et al. JACC 2026.'},
+]},
+{cat:'cardio',condition:'Dyslipidemia',sub:'2026 ACC/AHA guideline; LDL targets by risk tier',drugs:[
+{n:'Atorvastatin',l:1,cls:'High-intensity statin',dose:'40–80 mg daily (nightly preferred)',note:'≥50% LDL-C reduction. CYP3A4 interactions.',trials:['TNT','PROVE-IT'],flags:['High-intensity 1st'],ref:'Blumenthal RS et al. JACC 2026.'},
+{n:'Rosuvastatin',l:1,cls:'High-intensity statin',dose:'20–40 mg daily',note:'No CYP3A4 metabolism; fewer DDIs. JUPITER for primary prevention.',trials:['JUPITER'],flags:['Fewer DDIs'],ref:'Blumenthal RS et al. JACC 2026.'},
+{n:'Ezetimibe',l:2,cls:'NPC1L1 inhibitor',dose:'10 mg daily',note:'IMPROVE-IT: 2% absolute benefit post-ACS. 18% LDL reduction monotherapy.',trials:['IMPROVE-IT'],flags:['1st add-on to statin'],ref:'Blumenthal RS et al. JACC 2026.'},
+{n:'Bempedoic acid',l:2,cls:'ATP-citrate lyase inhibitor',dose:'180 mg once daily',note:'CLEAR Outcomes: 13% CV reduction statin-intolerant. Gout and tendon rupture risk.',trials:['CLEAR Outcomes'],flags:['Statin-intolerant option'],ref:'Blumenthal RS et al. JACC 2026.'},
+{n:'Evolocumab',l:3,cls:'PCSK9 mAb',dose:'140 mg SC q2wk or 420 mg monthly',note:'FOURIER: 15% CV event reduction. Median LDL 30 mg/dL safe over 8 years.',trials:['FOURIER'],flags:['Very high-risk ASCVD'],ref:'Blumenthal RS et al. JACC 2026.'},
+{n:'Inclisiran',l:3,cls:'PCSK9 siRNA',dose:'284 mg SC at day 1, 3 months, then q6mo',note:'LDL-C 48–52% reduction. Twice-yearly dosing advantage.',trials:[],flags:['Twice-yearly dosing'],ref:'Blumenthal RS et al. JACC 2026.'},
+]},
+{cat:'dm',condition:'Type 2 diabetes',sub:'ADA 2026 Standards; ACP 2024; JAMA 2025 review',drugs:[
+{n:'Metformin',l:1,cls:'Biguanide',dose:'500–1000 mg BID; ER 1000–2000 mg daily',note:'First-line unless eGFR<30. HbA1c reduction up to 2.0%. Hold 48h pre-contrast/surgery. Titrate slowly for GI.',trials:['UKPDS'],flags:['Hold pre-contrast','eGFR ≥30 required'],ref:'Kalyani RR et al. JAMA 2025;334(11):984. ADA 2026 (Diabetes Care 2026;49:S183).'},
+{n:'Empagliflozin',l:1,cls:'SGLT2 inhibitor',dose:'10–25 mg once daily',note:'EMPA-REG: 38% ↓CV death, 35% ↓HF hospitalization. 45% ↓CKD progression (meta-analysis). Start regardless of CV/renal status if ASCVD/HF/CKD.',trials:['EMPA-REG OUTCOME','EMPA-KIDNEY'],flags:['CV+renal outcomes','Euglycemic DKA risk'],ref:'Kalyani RR. NEJM 2021;384:1248. ADA 2026.'},
+{n:'Semaglutide SC (Ozempic)',l:1,cls:'GLP-1 receptor agonist',dose:'0.25 mg weekly → 0.5 → 1 → 2 mg weekly',note:'SUSTAIN-6: 26% ↓MACE, 39% ↓stroke. Nausea 20–40%. Avoid gastroparesis. Contraindicated personal/family MTC or MEN2.',trials:['SUSTAIN-6'],flags:['MACE benefit','Avoid gastroparesis','MTC/MEN2 CI'],ref:'Kalyani RR. NEJM 2021;384:1248.'},
+{n:'Dulaglutide (Trulicity)',l:1,cls:'GLP-1 receptor agonist',dose:'0.75 mg weekly → 1.5 → 3 → 4.5 mg weekly',note:'REWIND: 12% ↓MACE. Auto-injector.',trials:['REWIND'],flags:['MACE benefit','Auto-injector'],ref:'Kalyani RR et al. JAMA 2025;334(11):984.'},
+{n:'Tirzepatide (Mounjaro)',l:2,cls:'GLP-1/GIP dual agonist',dose:'2.5 mg weekly → titrate → 15 mg weekly',note:'SURPASS: HbA1c reduction 1.5–2.5% — superior to semaglutide 1 mg. Weight loss 7–12 kg at diabetes doses.',trials:['SURPASS'],flags:['Superior glycemic control','Dual agonist'],ref:'Kalyani RR et al. JAMA 2025;334(11):984. ADA 2026.'},
+{n:'Sitagliptin',l:2,cls:'DPP-4 inhibitor',dose:'100 mg daily; 50 mg if eGFR 30–50; 25 mg if <30',note:'TECOS: CV-neutral. Weight-neutral. Low hypoglycemia. Adjust by renal function.',trials:['TECOS'],flags:['Weight neutral','Renal dose adjust'],ref:'Ahmad E et al. Lancet 2022;400:1803.'},
+{n:'Glipizide',l:2,cls:'Sulfonylurea 2nd generation',dose:'2.5–20 mg daily or BID',note:'Low cost; HbA1c up to 2.0%. Hypoglycemia risk. Inferior to SGLT2i/GLP-1 for mortality (ACP 2024).',trials:[],flags:['Hypoglycemia risk','Low cost'],ref:'Qaseem A et al. Ann Intern Med 2024;177(5):658.'},
+{n:'Insulin glargine',l:3,cls:'Basal insulin',dose:'10 units SC qHS → titrate 2–4 units q3 days to FBG 80–130',note:'Add when HbA1c >10% or symptomatic hyperglycemia.',trials:[],flags:['HbA1c >10% indicator'],ref:'ADA 2026.'},
+{n:'Insulin degludec (Tresiba)',l:3,cls:'Ultra-long basal insulin',dose:'10 units SC daily (flexible timing)',note:'BEGIN trials: lower nocturnal hypoglycemia vs glargine. Flexible timing.',trials:['BEGIN'],flags:['Flexible timing','Lower nocturnal hypo'],ref:'ADA 2026.'},
+]},
+{cat:'dm',condition:'Obesity management',sub:'BMI ≥30 or ≥27 + comorbidity; ACC 2025 consensus; JAMA 2024 reviews',drugs:[
+{n:'Semaglutide 2.4 mg (Wegovy)',l:1,cls:'GLP-1 RA (obesity dose)',dose:'0.25 mg SC weekly → titrate q4wk → 2.4 mg weekly',note:'STEP 1: 14.9% weight loss vs 2.4% placebo. SELECT: 20% ↓MACE in obesity with CVD. Oral Wegovy 25 mg approved Dec 2025.',trials:['STEP 1','SELECT'],flags:['MACE benefit (SELECT)','~$900/month'],ref:'Gudzune KA, Kushner RF. JAMA 2024;332(7):571. Gilbert O et al. JACC 2025;86(7):536.'},
+{n:'Tirzepatide 15 mg (Zepbound)',l:1,cls:'GLP-1/GIP dual agonist (obesity)',dose:'2.5 mg SC weekly → titrate → 15 mg weekly',note:'SURMOUNT-1: 20.9% weight loss. SURMOUNT-5: superior to semaglutide 2.4 mg (20.2% vs 13.7%). Highest efficacy.',trials:['SURMOUNT-1','SURMOUNT-5'],flags:['Superior weight loss','~$1080/month'],ref:'Gudzune KA, Kushner RF. JAMA 2024;332(7):571.'},
+{n:'Orforglipron (Foundayo)',l:1,cls:'Oral GLP-1 RA',dose:'0.8 mg daily → titrate → up to 17.2 mg daily',note:'FDA-approved April 2026. First oral non-peptide GLP-1 agonist for obesity. No food timing restrictions.',trials:[],flags:['FDA April 2026','Oral formulation'],ref:'FDA Orange Book 2026.'},
+{n:'Phentermine/topiramate ER (Qsymia)',l:2,cls:'Sympathomimetic + GABA modulator',dose:'3.75/23 mg daily → max 15/92 mg daily',note:'9.8% weight loss. REMS: monthly pregnancy test (teratogenic). Contraindicated in pregnancy, glaucoma, hyperthyroidism, MAOI.',trials:[],flags:['REMS required','Teratogenic','~$116/month'],ref:'Elmaleh-Sachs A et al. JAMA 2023;330(20):2000.'},
+{n:'Naltrexone/bupropion ER (Contrave)',l:2,cls:'Opioid antagonist + NDRI',dose:'8/90 mg daily → 32/360 mg daily',note:'5.9% weight loss. Contraindicated: uncontrolled HTN, seizure, eating disorders, chronic opioid use, MAOI.',trials:[],flags:['Avoid seizure/eating Dx'],ref:'Gudzune KA, Kushner RF. JAMA 2024;332(7):571.'},
+{n:'Orlistat (Xenical)',l:3,cls:'GI lipase inhibitor',dose:'60–120 mg TID with fatty meals',note:'3–5% weight loss (modest). GI side effects limit adherence. OTC 60 mg. Supplement fat-soluble vitamins.',trials:[],flags:['Lowest efficacy','GI side effects'],ref:'Gudzune KA, Kushner RF. JAMA 2024;332(7):571.'},
+]},
+{cat:'dm',condition:'Hypothyroidism',sub:'JAMA 2025 review; target TSH 0.5–2.5 mIU/L',drugs:[
+{n:'Levothyroxine (T4)',l:1,cls:'Thyroid hormone replacement',dose:'1.6 mcg/kg/day; start 25–50 mcg elderly/cardiac; titrate q4–6wk',note:'Take 30–60 min before food. Avoid within 4h of Ca2+, iron, PPIs. TSH 6–8 wks after dose change. Consistent brand.',trials:[],flags:['Separate from Ca/Fe 4h','TSH q6-8wk after change'],ref:'Chaker L et al. JAMA 2025 (epub). Wilson SA et al. AFP 2021;103(10):605.'},
+{n:'Liothyronine (T3)',l:3,cls:'T3 supplement',dose:'5–25 mcg daily or BID',note:'NOT recommended as routine addition to T4 — no evidence of benefit; supraphysiologic T3 levels. Specialist only.',trials:[],flags:['Not routinely recommended','Specialist only'],ref:'Chaker L et al. JAMA 2025.'},
+]},
+{cat:'dm',condition:'Hyperthyroidism / Graves\' disease',sub:'ACOG Practice Bulletin #223 2020; antithyroid bridge',drugs:[
+{n:'Methimazole',l:1,cls:'Thionamide',dose:'5–30 mg daily BID → maintenance 5–10 mg daily',note:'Preferred after 1st trimester. Agranulocytosis: fever/sore throat → stop + CBC immediately. Contraindicated 1st trimester.',trials:[],flags:['Not 1st trimester','Agranulocytosis: stop if fever'],ref:'ACOG Practice Bulletin #223. Obstet Gynecol 2020;135(6):e261.'},
+{n:'Propylthiouracil (PTU)',l:2,cls:'Thionamide',dose:'100–600 mg daily divided TID → maintenance 50 mg TID',note:'1st trimester ONLY. Black box hepatotoxicity. Avoid >12 weeks if possible. Inhibits T4→T3.',trials:[],flags:['1st trimester ONLY','Hepatotoxicity black box'],ref:'ACOG Practice Bulletin #223. 2020.'},
+{n:'Propranolol',l:1,cls:'Beta-blocker (adjunct)',dose:'10–40 mg TID–QID',note:'Symptom relief only. Inhibits T4→T3 conversion. Not primary treatment.',trials:[],flags:['Adjunct only'],ref:'ACOG Practice Bulletin #223. 2020.'},
+]},
+{cat:'resp',condition:'Persistent asthma — GINA 2024/2025 stepwise',sub:'Track 1 preferred: ICS-formoterol as maintenance + reliever at all steps',drugs:[
+{n:'Budesonide-formoterol (SMART)',l:1,cls:'ICS/LABA — maintenance + reliever',dose:'200/6 mcg: 1–2 puffs BID + 1 puff PRN (max 12/day)',note:'GINA preferred strategy. 29–30% reduction severe exacerbations vs fixed ICS-LABA + SABA. Rinse mouth.',trials:['GINA SMART trials'],flags:['GINA preferred','Exacerbation reduction'],ref:'Reddel HK et al. Am J Respir Crit Care Med 2022;205:17. GINA 2025.'},
+{n:'Fluticasone propionate (ICS)',l:1,cls:'ICS (step 2)',dose:'100–250 mcg/day low; 250–500 mcg/day medium; >500 high',note:'Daily ICS step 2 mild persistent. Rinse mouth (candidiasis). 80–90% max benefit at low-medium doses.',trials:[],flags:['Step 2','Rinse mouth'],ref:'Porsbjerg C et al. Lancet 2023;401:858.'},
+{n:'Albuterol MDI',l:1,cls:'SABA (rescue only)',dose:'90 mcg/puff; 2 puffs PRN (spacer recommended)',note:'GINA: avoid SABA-only. >2 days/week = not well-controlled → step up.',trials:[],flags:['Rescue only','Always pair with ICS'],ref:'GINA 2025.'},
+{n:'Tiotropium (Spiriva Respimat)',l:2,cls:'LAMA (add-on step 4–5)',dose:'2.5 mcg (2 puffs) once daily',note:'GINA step 4–5 add-on. Reduces exacerbations. Triple therapy before biologics.',trials:[],flags:['Step 4-5 add-on'],ref:'GINA 2025.'},
+{n:'Montelukast',l:2,cls:'LTRA',dose:'10 mg daily adult; 5 mg age 6–14',note:'FDA black box 2020: serious neuropsychiatric events (suicidality, aggression, depression). Counsel before prescribing.',trials:[],flags:['FDA black box neuro-psych','Not GINA 1st-line'],ref:'Cloutier MM et al. JAMA 2020;324(22):2301.'},
+{n:'Dupilumab (Dupixent)',l:3,cls:'Anti-IL-4Ra biologic',dose:'400 mg loading → 200 mg SC q2wk',note:'Step 5 severe eosinophilic (eos ≥150). IRR 0.43–0.58. Conjunctivitis 10–20%. Also AD/CRSwNP.',trials:['LIBERTY ASTHMA QUEST'],flags:['Eos ≥150','Conjunctivitis SE'],ref:'Brusselle GG, Koppelman GH. NEJM 2022;386(2):157.'},
+{n:'Mepolizumab (Nucala)',l:3,cls:'Anti-IL-5 biologic',dose:'100 mg SC q4wk',note:'IRR 0.49 (51% ↓exacerbations). Eos ≥150. Reduces OCS dose (high certainty).',trials:['MENSA','SIRIUS'],flags:['Eos ≥150','OCS reduction'],ref:'Brusselle GG et al. NEJM 2022;386:157.'},
+{n:'Tezepelumab (Tezspire)',l:3,cls:'Anti-TSLP biologic',dose:'210 mg SC q4wk; age ≥12',note:'Only biologic effective in non-eosinophilic asthma. 30–70% ↓exacerbations across all biomarkers.',trials:['NAVIGATOR'],flags:['Biomarker-independent'],ref:'Cardet JC et al. JAMA 2025.'},
+{n:'Prednisone (exacerbation)',l:2,cls:'OCS burst',dose:'40–60 mg daily × 3–10 days (5 days sufficient)',note:'No taper needed <2 weeks. Glucose monitoring in DM.',trials:[],flags:['No taper <2wk'],ref:'Cloutier MM et al. JAMA 2020;324:2301.'},
+]},
+{cat:'resp',condition:'COPD stable — GOLD 2023 ABE groups',sub:'Smoking cessation #1 intervention; ABE classification replaced ABCD',drugs:[
+{n:'Tiotropium (Spiriva)',l:1,cls:'LAMA',dose:'18 mcg HandiHaler daily or 2.5 mcg Respimat daily',note:'UPLIFT: superior to LABA monotherapy. First-line all symptomatic COPD.',trials:['UPLIFT'],flags:['1st line all symptomatic'],ref:'GOLD 2023.'},
+{n:'Umeclidinium/vilanterol (Anoro)',l:1,cls:'LAMA/LABA combination',dose:'62.5/25 mcg once daily (Ellipta)',note:'IMPACT: LAMA+LABA superior to LABA alone for exacerbation reduction.',trials:['IMPACT'],flags:['LAMA+LABA preferred B/E'],ref:'GOLD 2023.'},
+{n:'Budesonide/formoterol/glycopyrrolate (Breztri)',l:2,cls:'Triple ICS/LABA/LAMA',dose:'320/9.6/14.4 mcg BID',note:'ETHOS: triple therapy reduces mortality vs dual. Eos ≥300 predicts ICS benefit.',trials:['ETHOS','IMPACT'],flags:['ETHOS mortality benefit'],ref:'GOLD 2023.'},
+{n:'Roflumilast (Daliresp)',l:3,cls:'PDE4 inhibitor',dose:'250 mcg daily ×4wk → 500 mcg daily',note:'Severe COPD + chronic bronchitis + ≥2 exacerbations/year. GI SE limit use.',trials:['REACT'],flags:['Chronic bronchitis specific','GI SE limits use'],ref:'GOLD 2023.'},
+{n:'Azithromycin prophylaxis',l:3,cls:'Macrolide antibiotic (chronic)',dose:'250 mg daily or 500 mg 3x/week',note:'≥3 exacerbations/year. QTc monitoring. MAC culture first. Audiometry.',trials:['MACRO'],flags:['MAC culture first','QTc monitoring'],ref:'GOLD 2023.'},
+]},
+{cat:'mh',condition:'Major depressive disorder',sub:'STAR*D network; SSRIs/SNRIs first-line; CBT + medication combined',drugs:[
+{n:'Escitalopram',l:1,cls:'SSRI',dose:'10 mg daily → 20 mg daily',note:'Best tolerability in STAR*D. QTc prolongation at >20 mg. Minimal DDIs.',trials:['STAR*D'],flags:['Best tolerability STAR*D'],ref:'Szuhany KL et al. JAMA 2022;328:2431.'},
+{n:'Sertraline',l:1,cls:'SSRI',dose:'25–50 mg daily → 200 mg daily',note:'Fewest DDIs of all SSRIs. GI SE first 2 weeks. Sexual dysfunction 30–40%.',trials:['STAR*D'],flags:['Fewest DDIs','Sexual SE 30-40%'],ref:'Szuhany KL et al. JAMA 2022;328:2431.'},
+{n:'Fluoxetine',l:1,cls:'SSRI',dose:'20 mg daily → 60 mg daily',note:'Longest half-life — safest in overdose; least discontinuation. Potent CYP2D6/2C9 inhibitor.',trials:[],flags:['Safest in overdose','CYP2D6 inhibitor'],ref:'Szuhany KL et al. JAMA 2022;328:2431.'},
+{n:'Bupropion XL',l:1,cls:'NDRI',dose:'150 mg XL daily → 300 mg daily (max 450 mg)',note:'No sexual SE. Weight neutral/loss. Activating. Avoid in eating disorders, seizure, MAOI.',trials:[],flags:['No sexual SE','Avoid eating disorders'],ref:'Szuhany KL et al. JAMA 2022;328:2431.'},
+{n:'Venlafaxine XR',l:1,cls:'SNRI',dose:'75 mg XR daily → 150–225 mg daily',note:'Effective depression + anxiety. Dose-dependent HTN ≥150 mg. Severe discontinuation — taper slowly.',trials:[],flags:['BP monitoring','Severe discontinuation'],ref:'Slee A et al. Lancet 2019;393:768.'},
+{n:'Duloxetine',l:1,cls:'SNRI',dose:'30 mg daily → 60 mg daily (max 120 mg)',note:'FDA-approved MDD, GAD, DPN, fibromyalgia, chronic MSK pain. Hepatotoxicity.',trials:[],flags:['Multi-indication pain','Hepatotoxicity'],ref:'Szuhany KL et al. JAMA 2022;328:2431.'},
+{n:'Mirtazapine',l:2,cls:'NaSSA',dose:'15 mg qHS → 30–45 mg qHS',note:'Paradox: 7.5 mg more sedating than 30 mg. Appetite/weight increase. No sexual dysfunction.',trials:[],flags:['Appetite/sleep benefit','Paradoxical sedation'],ref:'Szuhany KL et al. JAMA 2022;328:2431.'},
+{n:'Aripiprazole (augmentation)',l:2,cls:'Atypical antipsychotic augmentation',dose:'2–15 mg daily',note:'FDA-approved augmentation of MDD. NNT 9–10. Akathisia most common SE.',trials:[],flags:['FDA augmentation','Akathisia SE'],ref:'Szuhany KL et al. JAMA 2022;328:2431.'},
+{n:'Amitriptyline',l:3,cls:'TCA',dose:'25–150 mg qHS',note:'Effective + neuropathic pain + migraine prevention. Lethal in overdose. Avoid elderly (Beers).',trials:[],flags:['Lethal overdose','Avoid elderly (Beers)'],ref:'Szuhany KL et al. JAMA 2022;328:2431.'},
+]},
+{cat:'mh',condition:'GAD / panic disorder / PTSD',sub:'SSRIs FDA-approved; Cochrane 2023 panic; APA PTSD guideline 2025',drugs:[
+{n:'Sertraline',l:1,cls:'SSRI',dose:'25–200 mg daily; start 12.5–25 mg in panic',note:'FDA-approved PTSD. Cochrane: SSRIs improved PTSD RR 0.66 (moderate certainty). Start very low in panic.',trials:['Cochrane PTSD 2022'],flags:['FDA: PTSD','Start very low in panic'],ref:'Williams T et al. Cochrane 2022. Slee A et al. Lancet 2019;393:768.'},
+{n:'Duloxetine',l:1,cls:'SNRI',dose:'30 mg daily → 60 mg daily',note:'GAD: Lancet network meta-analysis MD -3.13 — most efficacious with good acceptability. FDA-approved GAD.',trials:['Lancet GAD 2019'],flags:['Most efficacious GAD','FDA GAD'],ref:'Slee A et al. Lancet 2019;393:768.'},
+{n:'Venlafaxine XR',l:1,cls:'SNRI',dose:'75–225 mg daily',note:'FDA-approved GAD, panic, social phobia. Taper slowly to avoid discontinuation.',trials:[],flags:['FDA: GAD + panic + social'],ref:'Stein MB. NEJM 2015;373:2059.'},
+{n:'Buspirone',l:2,cls:'5-HT1A partial agonist',dose:'5 mg TID → 15–60 mg daily',note:'Non-addictive. GAD-only (not panic/social). Slower onset 2–4 weeks. Poor response if prior benzo use.',trials:[],flags:['Non-addictive','GAD only','Poor response post-benzo'],ref:'Stein MB. NEJM 2015;373:2059.'},
+{n:'Prazosin (PTSD nightmares)',l:2,cls:'Alpha-1 blocker',dose:'1 mg qHS → titrate to 6–15 mg qHS',note:'PTSD nightmares. Orthostatic hypotension. Mixed evidence: RESPECT-PTSD negative.',trials:['RESPECT-PTSD (negative)'],flags:['Nightmare specific','1st dose hypotension'],ref:'Seales S. AFP 2022;106:623.'},
+{n:'Lorazepam',l:3,cls:'Benzodiazepine',dose:'0.5–1 mg BID–TID',note:'Effective acute anxiety. NOT first-line (Lancet 2019: poorly tolerated vs SSRIs). Dependence 2–4 weeks. NOT for PTSD.',trials:['Lancet GAD 2019'],flags:['Not recommended 1st line','Not for PTSD'],ref:'Slee A et al. Lancet 2019;393:768.'},
+]},
+{cat:'mh',condition:'ADHD — adult and pediatric',sub:'AAP 2019; NEJM 2020; stimulants 1st line (effect size ~1.0)',drugs:[
+{n:'Methylphenidate OROS (Concerta)',l:1,cls:'CNS stimulant — Schedule II',dose:'18 mg daily → max 72 mg (children: 18–54 mg)',note:'12-hour OROS. Monitor BP/HR/height/weight each visit. Titrate to response — not weight-based.',trials:['AAP guidelines'],flags:['Schedule II','Monitor BP/HR/growth'],ref:'Cortese S. NEJM 2020;383:1050.'},
+{n:'Mixed amphetamine salts XR',l:1,cls:'CNS stimulant — Schedule II',dose:'10–20 mg daily → max 60 mg',note:'~40% respond to amphetamine only (idiosyncratic response). Avoid MAOI within 14 days.',trials:[],flags:['Diversion surveillance','Avoid MAOI'],ref:'Cortese S. NEJM 2020;383:1050.'},
+{n:'Lisdexamfetamine (Vyvanse)',l:1,cls:'Prodrug stimulant — Schedule II',dose:'30 mg daily → max 70 mg',note:'Prodrug — lower abuse liability. 13-hour duration. Also FDA-approved binge eating disorder.',trials:[],flags:['Lower abuse (prodrug)','BED approved'],ref:'Cortese S. NEJM 2020;383:1050.'},
+{n:'Atomoxetine (Strattera)',l:2,cls:'NE reuptake inhibitor (non-stimulant)',dose:'0.5 mg/kg → 1.2–1.4 mg/kg (max 100 mg)',note:'Non-scheduled. Onset 2–4 weeks. Black box: suicidality in children. Hepatotoxicity. Best for SUD comorbidity.',trials:[],flags:['Non-scheduled','Suicidality black box','SUD comorbidity safe'],ref:'Cortese S. NEJM 2020;383:1050.'},
+{n:'Guanfacine XR (Intuniv)',l:2,cls:'Alpha-2A agonist (non-stimulant)',dose:'1 mg daily → 1–4 mg daily',note:'Also for tics, aggression, insomnia. Do not abruptly discontinue (rebound HTN).',trials:[],flags:['No abrupt DC','Tics/sleep adjunct'],ref:'Wolraich ML et al. Pediatrics 2019;144.'},
+{n:'Viloxazine (Qelbree)',l:2,cls:'NE reuptake inhibitor + serotonin modulator',dose:'Children 6–11: 100 mg → max 400 mg; adults: 200 mg → max 600 mg',note:'FDA-approved pediatric ADHD 2021; adult ADHD 2022. Non-stimulant.',trials:[],flags:['FDA 2021/2022','Non-stimulant'],ref:'Brancati GE et al. Expert Rev Neurother 2024;24(8):743.'},
+]},
+{cat:'mh',condition:'Bipolar disorder I and II',sub:'JAMA 2023 review; Lancet 2025; avoid SSRI monotherapy',drugs:[
+{n:'Lithium',l:1,cls:'Mood stabilizer',dose:'300 mg BID–TID → level 0.8–1.2 mEq/L acute; 0.6–1.0 maintenance',note:'Gold standard + antisuicide. Monitor level + BMP + TSH + calcium + ECG. NSAIDs/ACEi raise levels → toxicity.',trials:[],flags:['Anti-suicide benefit','Narrow TI','NSAID/ACEi raise level'],ref:'Nierenberg AA et al. JAMA 2023;330(14):1370. Singh B et al. Lancet 2025;406:963.'},
+{n:'Lamotrigine',l:1,cls:'Anticonvulsant mood stabilizer',dose:'25 mg daily × 2wk → 50 → 100 → 200 mg (8-week titration)',note:'Bipolar II depression gold standard. SJS/TEN risk with rapid titration (1/1000). CRITICAL titration. Halve dose if on valproate.',trials:[],flags:['Titration CRITICAL — SJS risk','Valproate halves dose'],ref:'Nierenberg AA et al. JAMA 2023;330:1370.'},
+{n:'Quetiapine',l:1,cls:'Atypical antipsychotic',dose:'50 mg BID → 400–800 mg daily (mania); 50–300 mg qHS (bipolar depression)',note:'FDA-approved mania + bipolar depression + maintenance. Metabolic monitoring q3mo.',trials:[],flags:['FDA: mania + depression','Metabolic monitoring q3mo'],ref:'Nierenberg AA et al. JAMA 2023;330:1370.'},
+{n:'Valproate ER (Depakote)',l:2,cls:'Mood stabilizer/anticonvulsant',dose:'250–500 mg BID–TID → level 50–125 mcg/mL',note:'Mania > depression. CONTRAINDICATED pregnancy (neural tube defects, intellectual disability). Monthly pregnancy test. LFTs/CBC.',trials:[],flags:['CONTRAINDICATED pregnancy','Monthly pregnancy test'],ref:'Singh B et al. Lancet 2025;406:963.'},
+{n:'Lurasidone (Latuda)',l:1,cls:'Atypical antipsychotic',dose:'20 mg daily with food (≥350 cal) → 40–120 mg',note:'FDA-approved bipolar I depression. Lower metabolic risk. Take with food (absorption doubles).',trials:[],flags:['Bipolar depression FDA','Take with food','Low metabolic SE'],ref:'Singh B et al. Lancet 2025;406:963.'},
+{n:'Cariprazine (Vraylar)',l:2,cls:'Atypical antipsychotic',dose:'1.5 mg daily → 3–6 mg (mania); 1.5–3 mg (bipolar depression)',note:'FDA-approved mania, mixed episodes, AND bipolar depression.',trials:[],flags:['FDA: mania + depression + mixed'],ref:'Singh B et al. Lancet 2025;406:963.'},
+{n:'Olanzapine',l:3,cls:'Atypical antipsychotic',dose:'10–15 mg daily → 20 mg',note:'Highly effective mania. Significant metabolic risk. Reserve for refractory.',trials:[],flags:['High metabolic risk','Last resort'],ref:'Nierenberg AA et al. JAMA 2023;330:1370.'},
+]},
+{cat:'mh',condition:'Opioid use disorder (MOUD)',sub:'JAMA 2026; X-waiver eliminated 2023; Calhoun County high OD burden',drugs:[
+{n:'Buprenorphine/naloxone (Suboxone)',l:1,cls:'Partial mu-opioid agonist — Schedule III',dose:'Day 1: 2–4 mg SL → 8–16 mg; maintenance >12 mg/day',note:'X-waiver eliminated 2023. COWS ≥8 before traditional induction. Microdosing option for fentanyl users.',trials:['VA/DoD CPG 2021'],flags:['No X-waiver 2023','COWS ≥8 traditional induction'],ref:'Walter K. JAMA 2026. Harris MTH et al. JAMA 2026.'},
+{n:'Naltrexone 380 mg IM (Vivitrol)',l:2,cls:'Opioid antagonist — not scheduled',dose:'380 mg IM q28 days after ≥7–10 days abstinence',note:'7–10 days opioid-free required. Lower retention than buprenorphine. Dual OUD+AUD use.',trials:['VA/DoD CPG 2021'],flags:['7-10 days abstinence required','Dual OUD+AUD'],ref:'Harris MTH et al. JAMA 2026.'},
+{n:'Methadone (OTP only)',l:2,cls:'Full mu-opioid agonist — Schedule II',dose:'Day 1: max 40 mg → titrate slowly; maintenance ≥80 mg',note:'OTP clinics only. QTc monitoring. 4.5 days to steady state — slow titration CRITICAL.',trials:[],flags:['OTP clinic only','QTc monitoring'],ref:'Harris MTH et al. JAMA 2026.'},
+{n:'Naloxone (Narcan)',l:1,cls:'Opioid antagonist (reversal)',dose:'4 mg intranasal or 0.4 mg IM/IV; repeat q2–3 min PRN',note:'Co-prescribe ALL opioid prescriptions. Michigan Good Samaritan Law 2017. Pharmacy standing order — no Rx needed in Michigan.',trials:[],flags:['Co-prescribe all opioids','MI Good Samaritan Law'],ref:'Harris MTH et al. JAMA 2026.'},
+]},
+{cat:'mh',condition:'Alcohol use disorder',sub:'JAMA 2023 systematic review 118 RCTs; NEJM 2025',drugs:[
+{n:'Naltrexone oral 50 mg',l:1,cls:'Opioid antagonist',dose:'25 mg ×3–7 days → 50 mg daily; or 380 mg IM monthly',note:'NNT 18 prevent return to any drinking; NNT 11 prevent heavy drinking (RR 0.81). Start while still drinking.',trials:['COMBINE'],flags:['NNT 11 heavy drinking','Opioid-free required'],ref:'McPheeters M et al. JAMA 2023;330(17):1653. Haber PS. NEJM 2025;392:258.'},
+{n:'Acamprosate (Campral)',l:1,cls:'Glutamate modulator',dose:'666 mg TID',note:'NNT 11 prevent return to any drinking (RR 0.88). Renally excreted — safe in liver disease. CrCl ≥30 required.',trials:['COMBINE'],flags:['Safe in liver disease','CrCl ≥30 required'],ref:'McPheeters M et al. JAMA 2023;330(17):1653.'},
+{n:'Topiramate (off-label)',l:2,cls:'GABA potentiator',dose:'25 mg daily → titrate to 200–300 mg daily',note:'Moderate-strength evidence. At least as effective as naltrexone. Cognitive impairment, metabolic acidosis. Not FDA-approved for AUD.',trials:[],flags:['Not FDA-approved AUD','Cognitive SE'],ref:'McPheeters M et al. JAMA 2023;330(17):1653.'},
+{n:'Disulfiram (Antabuse)',l:3,cls:'Aldehyde dehydrogenase inhibitor',dose:'250–500 mg daily',note:'Limited evidence. Most effective with supervised administration. Hepatotoxicity. Contraindicated: CVD, psychosis, pregnancy.',trials:[],flags:['Supervised use only','Hepatotoxicity'],ref:'McPheeters M et al. JAMA 2023;330(17):1653.'},
+{n:'Diazepam (CIWA-Ar)',l:1,cls:'Benzodiazepine — withdrawal',dose:'CIWA-Ar ≥8: 5–10 mg q1h PRN; max 40–60 mg/24h',note:'Symptom-triggered CIWA-Ar. Use lorazepam if liver disease. Hospitalize if CIWA ≥15 or prior seizure/DT.',trials:[],flags:['CIWA-Ar protocol','Lorazepam if liver disease'],ref:'Haber PS. NEJM 2025;392:258.'},
+]},
+{cat:'pain',condition:'Osteoarthritis / chronic MSK pain',sub:'Topical NSAIDs now 1st line; acetaminophen no longer 1st line (Cochrane); BMJ 2021 NMA',drugs:[
+{n:'Topical diclofenac 1% gel',l:1,cls:'Topical NSAID',dose:'2 g (4 pumps) QID per joint; Voltaren OTC',note:'BMJ 2021 NMA: diclofenac 150 mg/day ≥99% probability meaningful reduction. NNT 10 Cochrane. Minimal systemic absorption. OARSI/ACR preferred.',trials:['Cochrane topical','BMJ 2021 NMA'],flags:['OARSI/ACR preferred','Minimal systemic','Elderly safe'],ref:'da Costa BR et al. BMJ 2021;375:n2321.'},
+{n:'Diclofenac oral 150 mg/day',l:1,cls:'Oral NSAID (highest-ranked)',dose:'50 mg BID–TID (max 150 mg/day)',note:'BMJ 2021 NMA: highest-ranked oral NSAID — ≥99% probability meaningful OA pain reduction.',trials:['BMJ 2021 NMA'],flags:['Highest-ranked oral NSAID'],ref:'da Costa BR et al. BMJ 2021;375:n2321.'},
+{n:'Ibuprofen',l:1,cls:'Oral NSAID',dose:'400–800 mg TID with food; max 3200 mg/day',note:'Small-moderate OA benefit 3–6 months. Add PPI if risk factors. CV risk. Avoid eGFR<60.',trials:['BMJ 2021 NMA'],flags:['Add PPI if GI risk','Avoid eGFR <60'],ref:'da Costa BR et al. BMJ 2021;375:n2321.'},
+{n:'Duloxetine',l:2,cls:'SNRI (central pain modulation)',dose:'30 mg daily ×1wk → 60 mg daily (max 120 mg)',note:'FDA-approved chronic MSK pain and OA. NNT 6 OA. Central sensitization mechanism.',trials:['PRECISION-OA'],flags:['FDA: chronic MSK + OA','NNT 6 OA'],ref:'da Costa BR et al. BMJ 2021;375:n2321. Sokol R et al. AFP 2025;112(2):187.'},
+{n:'Celecoxib',l:2,cls:'COX-2 selective NSAID',dose:'100–200 mg BID (max 400 mg/day)',note:'Lower GI risk vs non-selective NSAIDs. CV risk remains. Sulfa allergy check.',trials:['PRECISION'],flags:['Lower GI risk','CV risk remains'],ref:'da Costa BR et al. BMJ 2021;375:n2321.'},
+{n:'Acetaminophen',l:2,cls:'Analgesic (limited OA benefit)',dose:'325–650 mg q4–6h; max 3 g/day (2 g if liver disease)',note:'No longer first-line OA — Cochrane lacks benefit evidence. May use as adjunct if NSAIDs contraindicated.',trials:['Cochrane (lack of benefit)'],flags:['No longer 1st line OA (Cochrane)'],ref:'da Costa BR et al. BMJ 2021;375:n2321.'},
+{n:'Tramadol',l:3,cls:'Atypical opioid + SNRI',dose:'50–100 mg q4–6h; max 400 mg/day',note:'Downgraded to third-line NeuPSIG 2025. Serotonin syndrome with SSRIs. MAPS required.',trials:['NeuPSIG 2025'],flags:['Downgraded 3rd line 2025','Serotonin syndrome SSRI risk'],ref:'Sokol R et al. AFP 2025;112(2):187.'},
+{n:'Oxycodone IR',l:3,cls:'Full opioid agonist — Schedule II',dose:'5–10 mg q4–6h PRN short-term only',note:'CDC 2022: benefit does not outweigh harm in OA (83.3% opioids had increased dropout). Michigan 7-day limit. MAPS required.',trials:['CDC 2022'],flags:['7-day limit MI law','MAPS required','No benzo black box'],ref:'Dowell D et al. MMWR 2022;71(3):1.'},
+]},
+{cat:'pain',condition:'Neuropathic pain — DPN, PHN',sub:'NeuPSIG 2025 Lancet Neurology; JAMA 2026 peripheral neuropathy review',drugs:[
+{n:'Duloxetine',l:1,cls:'SNRI',dose:'30 mg daily ×1wk → 60 mg daily (max 120 mg)',note:'NNT 7.4 (NeuPSIG 2025). FDA-approved DPN. RR 1.53 for ≥50% improvement. First-line in T2DM neuropathy.',trials:['NeuPSIG 2025','OPTION-DM'],flags:['FDA DPN','NNT 7.4'],ref:'Soliman N et al. Lancet Neurol 2025;24(5):413.'},
+{n:'Amitriptyline',l:1,cls:'TCA',dose:'10–25 mg qHS → 75–150 mg qHS',note:'NNT 4.6 — best NNT first-line (NeuPSIG 2025). ECG before starting. Not in elderly. Lethal in overdose.',trials:['NeuPSIG 2025'],flags:['NNT 4.6 (best)','Not in elderly (Beers)','ECG before start'],ref:'Soliman N et al. Lancet Neurol 2025;24(5):413.'},
+{n:'Nortriptyline',l:1,cls:'TCA (secondary amine)',dose:'10–25 mg qHS → 75–150 mg qHS',note:'Preferred TCA in elderly — fewer anticholinergic effects. Same NNT ~4.6 class.',trials:['NeuPSIG 2025'],flags:['Preferred TCA in elderly'],ref:'Soliman N et al. Lancet Neurol 2025;24(5):413.'},
+{n:'Gabapentin',l:1,cls:'Alpha-2-delta ligand — Schedule V Michigan',dose:'100–300 mg qHS → 1200–3600 mg/day TID',note:'NNT 8.9 (NeuPSIG 2025). Schedule V in Michigan (2018). Falls risk elderly. No abrupt DC (withdrawal seizures).',trials:['NeuPSIG 2025'],flags:['Schedule V Michigan','Falls risk elderly','No abrupt DC'],ref:'Soliman N et al. Lancet Neurol 2025;24(5):413.'},
+{n:'Pregabalin',l:1,cls:'Alpha-2-delta ligand — Schedule V',dose:'75 mg BID → 150–600 mg daily BID',note:'NNT 8.9 class. FDA-approved DPN, PHN, fibromyalgia. BID better adherence than TID gabapentin.',trials:['NeuPSIG 2025'],flags:['FDA: DPN + PHN + fibro','BID dosing'],ref:'Soliman N et al. Lancet Neurol 2025;24(5):413.'},
+{n:'Capsaicin 8% patch (Qutenza)',l:2,cls:'TRPV1 agonist',dose:'1–4 patches ×30–60 min q3mo (clinician-applied)',note:'NNT 13.2 (NeuPSIG 2025). PHN: 42% ≥30% reduction. NNH 1129 (very low risk). Pre-treat with anesthetic.',trials:['NeuPSIG 2025'],flags:['Clinician-applied only','Pre-treat anesthetic'],ref:'Soliman N et al. Lancet Neurol 2025;24(5):413.'},
+{n:'Lidocaine 5% patch',l:2,cls:'Topical sodium channel blocker',dose:'1–3 patches ×12h on, 12h off daily',note:'NNT 14.5 (NeuPSIG 2025). FDA PHN. DPN: 70% ≥30% reduction. Intact skin only.',trials:['NeuPSIG 2025'],flags:['FDA PHN','Intact skin only'],ref:'Soliman N et al. Lancet Neurol 2025;24(5):413.'},
+]},
+{cat:'pain',condition:'Gout — acute flare and ULT',sub:'ACR 2020 guideline; NEJM 2022; target SUA <6 mg/dL',drugs:[
+{n:'Colchicine',l:1,cls:'Microtubule inhibitor',dose:'1.2 mg at first sign → 0.6 mg 1h later; prophylaxis 0.6 mg daily–BID',note:'ACR 2020 low-dose = equal efficacy, fewer GI AE. Most effective within first 12h. CYP3A4+P-gp DDI (clarithromycin).',trials:['ACR 2020'],flags:['First 12h critical','CYP3A4 DDI'],ref:'FitzGerald JD et al. Arthritis Care Res 2020;72(6):744. Mikuls TR. NEJM 2022;387:1877.'},
+{n:'Naproxen',l:1,cls:'NSAID',dose:'500–750 mg then 500 mg BID ×5–7 days',note:'ACR 2020 first-line. Preferred over indomethacin in elderly/renal impairment.',trials:['ACR 2020'],flags:['Preferred elderly over indomethacin'],ref:'FitzGerald JD et al. Arthritis Care Res 2020;72(6):744.'},
+{n:'Indomethacin',l:1,cls:'NSAID (high-potency)',dose:'50 mg TID ×5–7 days',note:'Classic gout NSAID. Higher GI/renal/CNS toxicity. Avoid age >65, CKD.',trials:['ACR 2020'],flags:['Higher toxicity','Avoid elderly/CKD'],ref:'FitzGerald JD et al. Arthritis Care Res 2020;72(6):744.'},
+{n:'Prednisone',l:2,cls:'Oral corticosteroid',dose:'0.5 mg/kg/day ×5–7 days; or triamcinolone 60 mg IM',note:'When NSAIDs + colchicine contraindicated. DM glucose monitoring 24–72h.',trials:['ACR 2020'],flags:['NSAIDs/colchicine CI','DM glucose monitoring'],ref:'FitzGerald JD et al. Arthritis Care Res 2020;72(6):744.'},
+{n:'Allopurinol',l:1,cls:'Xanthine oxidase inhibitor (ULT)',dose:'Start ≤100 mg daily (50 mg if CKD) → titrate to SUA <6 mg/dL',note:'ACR 2020 preferred ULT. Start WITH colchicine prophylaxis. HLA-B*5801 testing Asian patients (SJS risk).',trials:['ACR 2020'],flags:['With prophylaxis on start','HLA-B*5801 Asian pts'],ref:'FitzGerald JD et al. Arthritis Care Res 2020;72(6):744.'},
+{n:'Febuxostat (Uloric)',l:2,cls:'Xanthine oxidase inhibitor',dose:'40–80 mg daily',note:'CARES trial: increased CV mortality vs allopurinol in established CVD. Use only if allopurinol intolerant.',trials:['CARES'],flags:['CARES: CV risk','Allopurinol intolerance only'],ref:'Mikuls TR. NEJM 2022;387:1877.'},
+]},
+{cat:'pain',condition:'Migraine — acute and preventive',sub:'ACP 2025; AHS 2021; JAMA 2021 systematic review',drugs:[
+{n:'Sumatriptan',l:1,cls:'Triptan (5-HT1B/1D agonist)',dose:'25–100 mg PO; 6 mg SC; 5–20 mg nasal',note:'JAMA 2021: pain freedom 2h 20–30%. Take at onset. Contraindicated CVD, uncontrolled HTN, hemiplegic migraine.',trials:['JAMA 2021 meta-analysis'],flags:['Contraindicated CVD'],ref:'VanderPluym JH et al. JAMA 2021;325(23):2357.'},
+{n:'Rizatriptan',l:1,cls:'Triptan',dose:'5–10 mg PO/ODT; max 30 mg/24h',note:'Fastest-onset oral triptan. ODT for nausea. Propranolol interaction → use 5 mg.',trials:['JAMA 2021'],flags:['Fastest oral onset','Propranolol → 5 mg'],ref:'VanderPluym JH et al. JAMA 2021;325:2357.'},
+{n:'Ibuprofen / Naproxen',l:1,cls:'NSAID (acute migraine)',dose:'Ibuprofen 400–800 mg; naproxen sodium 500–550 mg',note:'JAMA 2021: moderate-strength evidence. Triptan + NSAID more effective than either alone.',trials:['JAMA 2021'],flags:['Combine with triptan for benefit'],ref:'VanderPluym JH et al. JAMA 2021;325:2357.'},
+{n:'Ubrogepant (Ubrelvy)',l:2,cls:'CGRP antagonist — acute',dose:'50–100 mg; repeat in 2h (max 200 mg/day)',note:'No vasoconstrictive effect — safe in CVD. Effective during aura. CYP3A4 DDI.',trials:['ACHIEVE I/II'],flags:['CVD safe','Effective in aura'],ref:'Lipton RB et al. Headache 2026;66:976.'},
+{n:'Rimegepant (Nurtec ODT)',l:2,cls:'CGRP antagonist — dual acute + preventive',dose:'75 mg ODT PRN or q48h (preventive)',note:'FDA-approved BOTH acute AND preventive. No MOH risk.',trials:['BHV3000'],flags:['Dual acute+preventive','No MOH risk'],ref:'Ailani J et al. Headache 2021;61:1021.'},
+{n:'Topiramate',l:1,cls:'Anticonvulsant (prevention)',dose:'25 mg daily → 50–100 mg BID',note:'FDA-approved prevention. Weight loss benefit. Cognitive SE. Teratogenic. Kidney stones.',trials:['MIGR-001'],flags:['FDA prevention','Teratogenic','Kidney stones'],ref:'Ailani J et al. Headache 2021;61:1021.'},
+{n:'Propranolol',l:1,cls:'Beta-blocker (prevention)',dose:'40–240 mg daily (BID)',note:'FDA-approved prevention. Also treats HTN/anxiety comorbidities. Avoid asthma.',trials:[],flags:['FDA prevention'],ref:'Ailani J et al. Headache 2021;61:1021.'},
+{n:'Erenumab (Aimovig)',l:2,cls:'Anti-CGRP receptor mAb (prevention)',dose:'70–140 mg SC monthly',note:'STRIVE: 50% responder rate 40–60%. Reduces 3–5 headache days/month. Constipation SE.',trials:['STRIVE'],flags:['STRIVE trial','Constipation SE'],ref:'Ailani J et al. Headache 2021;61:1021.'},
+{n:'Atogepant (Qulipta)',l:2,cls:'Oral CGRP antagonist (prevention)',dose:'10–60 mg once daily',note:'FDA-approved episodic and chronic migraine prevention. Oral — no injection.',trials:[],flags:['Oral prevention'],ref:'FDA Orange Book 2026.'},
+]},
+{cat:'gi',condition:'GERD / peptic ulcer disease',sub:'ACG 2022 guideline; JAMA 2024 PUD review',drugs:[
+{n:'Omeprazole',l:1,cls:'Proton pump inhibitor',dose:'20–40 mg 30–60 min before morning meal',note:'ACG 2022: must take 30–60 min before first meal. Healing 12%/week vs 6%/week H2RAs. Indefinite for LA Grade C/D.',trials:['ACG 2022 evidence base'],flags:['30-60 min before meal critical'],ref:'Katz PO et al. Am J Gastroenterol 2022;117(1):27. Vakil N. JAMA 2024;332:1832.'},
+{n:'Pantoprazole',l:1,cls:'PPI',dose:'40 mg daily',note:'Fewer CYP2C19 DDIs — preferred with clopidogrel. IV available.',trials:[],flags:['Preferred with clopidogrel'],ref:'Katz PO et al. Am J Gastroenterol 2022;117:27.'},
+{n:'Famotidine',l:2,cls:'H2 receptor antagonist',dose:'20–40 mg daily–BID; 20 mg PRN (OTC)',note:'Healing 6%/week. Lower osteoporosis/C. diff risk than PPIs. Good mild GERD.',trials:[],flags:['Lower long-term risks vs PPI'],ref:'Katz PO et al. Am J Gastroenterol 2022;117:27.'},
+{n:'Vonoprazan (Voquezna)',l:2,cls:'Potassium-competitive acid blocker',dose:'10–20 mg once daily',note:'Faster onset than PPIs. >90% healing gastric/duodenal ulcers. Higher H. pylori eradication rates.',trials:['PHALCON'],flags:['Higher H. pylori eradication','Faster onset'],ref:'Almadi MA et al. Lancet 2024;404:68. Vakil N. JAMA 2024;332:1832.'},
+]},
+{cat:'gi',condition:'H. pylori eradication',sub:'Clarithromycin resistance 31.5% USA (2011-2021 meta-analysis); bismuth quadruple preferred',drugs:[
+{n:'Bismuth quadruple therapy',l:1,cls:'PPI + bismuth + tetracycline + metronidazole',dose:'PPI BID + bismuth 524 mg QID + tetracycline 500 mg QID + metronidazole 500 mg QID × 10–14 days',note:'Preferred: clarithromycin resistance suspected. Eradication 85–90%. Black stools benign. Pylera capsule simplifies.',trials:['Meta-analysis 2021'],flags:['High resistance preferred','85-90% eradication'],ref:'Vakil N. JAMA 2024;332(21):1832.'},
+{n:'Vonoprazan dual therapy',l:1,cls:'P-CAB + amoxicillin',dose:'Vonoprazan 20 mg BID + amoxicillin 1000 mg TID × 14 days',note:'Higher eradication rates than PPI-based regimens.',trials:['PHALCON'],flags:['Higher eradication than PPI triple'],ref:'Almadi MA et al. Lancet 2024;404:68.'},
+{n:'Clarithromycin triple',l:2,cls:'PPI + clarithromycin + amoxicillin',dose:'PPI BID + clarithromycin 500 mg BID + amoxicillin 1 g BID × 14 days',note:'ONLY if local clarithromycin resistance <15%. US resistance 31.5%. Test-of-cure 4 weeks after.',trials:[],flags:['Only if resistance <15%','Test-of-cure required'],ref:'Vakil N. JAMA 2024;332:1832.'},
+{n:'Levofloxacin triple (salvage)',l:3,cls:'PPI + levofloxacin + amoxicillin',dose:'PPI BID + levofloxacin 500 mg daily + amoxicillin 1 g BID × 14 days',note:'Rescue after 1st-line failure. US levofloxacin resistance 37.6%.',trials:[],flags:['Salvage only','Resistance 37.6%'],ref:'Vakil N. JAMA 2024;332:1832.'},
+]},
+{cat:'gi',condition:'IBS — C, D, and mixed subtypes',sub:'JAMA 2021 Camilleri review; AGA 2025; Lancet 2020',drugs:[
+{n:'Linaclotide (Linzess)',l:1,cls:'GC-C agonist (IBS-C)',dose:'290 mcg once daily 30 min before AM meal',note:'AGA strong recommendation, high-quality evidence. Diarrhea most common SE. Black box: do not use <6 years.',trials:['AGA evidence base'],flags:['AGA strong recommendation','Black box <6yo'],ref:'Camilleri M. JAMA 2021;325(9):865.'},
+{n:'Rifaximin (Xifaxan)',l:1,cls:'Non-absorbable antibiotic (IBS-D)',dose:'550 mg TID × 14 days; repeat q3mo PRN',note:'Improves diarrhea, urgency, bloating, pain. No increased C. diff risk. Repeat courses safe (TARGET 3).',trials:['TARGET 1','TARGET 2','TARGET 3'],flags:['Repeat courses safe','No C. diff risk'],ref:'Camilleri M. JAMA 2021;325:865.'},
+{n:'Ondansetron',l:1,cls:'5-HT3 antagonist (IBS-D)',dose:'4 mg up to TID',note:'2/3 report adequate relief. Improves urgency and loose stools. Inexpensive.',trials:[],flags:['2/3 adequate relief','Inexpensive'],ref:'Camilleri M. JAMA 2021;325:865.'},
+{n:'Loperamide (Imodium)',l:1,cls:'Peripheral opioid agonist (antidiarrheal)',dose:'2–4 mg after loose stool; max 16 mg/day',note:'Improves urgency/stool frequency. Does NOT improve pain. FDA warning >16 mg/day.',trials:[],flags:['Does not improve pain','Max 16 mg FDA warning'],ref:'Wilkinson JM et al. AFP 2021;103(12):727.'},
+{n:'Amitriptyline (low-dose)',l:2,cls:'TCA (visceral pain)',dose:'10–50 mg qHS (titrate by 10 mg q1–2wk)',note:'APC trial: effective IBS primary care. Anticholinergic effects useful in IBS-D.',trials:['APC trial'],flags:['APC trial evidence'],ref:'Camilleri M. JAMA 2021;325:865.'},
+{n:'Eluxadoline (Viberzi)',l:2,cls:'Mixed opioid agonist (IBS-D)',dose:'100 mg BID (75 mg if hepatic impairment)',note:'Relieves diarrhea + pain. CONTRAINDICATED: cholecystectomy, biliary obstruction, pancreatitis, >3 alcoholic drinks/day.',trials:[],flags:['Cholecystectomy CI','Pancreatitis risk'],ref:'Camilleri M. JAMA 2021;325:865.'},
+{n:'Plecanatide (Trulance)',l:1,cls:'GC-C agonist (IBS-C)',dose:'3–6 mg once daily',note:'Similar to linaclotide. May have less diarrhea.',trials:[],flags:['Less diarrhea vs linaclotide'],ref:'Camilleri M. JAMA 2021;325:865.'},
+{n:'Alosetron (Lotronex)',l:3,cls:'5-HT3 antagonist (IBS-D women)',dose:'0.5–1 mg BID',note:'Most effective IBS-D in network meta-analysis. Women severe IBS-D only. Ischemic colitis risk.',trials:[],flags:['Women severe IBS-D only','Ischemic colitis risk'],ref:'Camilleri M. JAMA 2021;325:865.'},
+]},
+{cat:'endo',condition:'Osteoporosis — fracture prevention',sub:'Lancet 2025; ACP Ann Intern Med 2023; BMJ 2023 network meta-analysis',drugs:[
+{n:'Alendronate',l:1,cls:'Oral bisphosphonate',dose:'70 mg weekly or 10 mg daily',note:'FIT: 50–70% ↓vertebral, 40% ↓hip fractures. Take 30 min before food upright. Drug holiday after 5 years. Avoid CrCl<35.',trials:['FIT'],flags:['Drug holiday 5 years','Stay upright 30 min'],ref:'Reid IR et al. Lancet 2022;399:1080. Ayers C et al. Ann Intern Med 2023;176:182.'},
+{n:'Risedronate',l:1,cls:'Oral bisphosphonate',dose:'35 mg weekly or 150 mg monthly',note:'VERT-MN/NA: similar efficacy. Monthly option improves adherence.',trials:['VERT-MN','VERT-NA'],flags:['Monthly option'],ref:'Reid IR et al. Lancet 2022;399:1080.'},
+{n:'Zoledronic acid',l:1,cls:'IV bisphosphonate',dose:'5 mg IV annually (3 years → holiday)',note:'HORIZON: annual infusion. Flu-like symptoms 24–72h (pre-treat acetaminophen + hydration). Dental evaluation.',trials:['HORIZON'],flags:['Annual infusion','Flu-like 24-72h'],ref:'Reid IR et al. Lancet 2022;399:1080.'},
+{n:'Denosumab (Prolia)',l:2,cls:'Anti-RANKL mAb',dose:'60 mg SC q6mo',note:'FREEDOM: similar fractures as bisphosphonates. CRITICAL: rebound vertebral fractures on discontinuation — must transition to bisphosphonate.',trials:['FREEDOM'],flags:['REBOUND fracture on stop','Transition required'],ref:'Reid IR et al. Lancet 2022;399:1080. Ye C et al. Lancet 2025;406:2003.'},
+{n:'Teriparatide (Forteo)',l:2,cls:'PTH analog (anabolic)',dose:'20 mcg SC daily × max 2 years lifetime',note:'VERO vs risedronate: HR 0.44 (56% ↓vertebral). 85% vertebral reduction vs placebo. Black box: osteosarcoma (rat data). Max 2 years. Must follow with antiresorptive.',trials:['VERO'],flags:['Best anabolic efficacy','Osteosarcoma black box','2-yr lifetime max'],ref:'Langdahl B. Bone 2020;139:115516.'},
+{n:'Romosozumab (Evenity)',l:3,cls:'Anti-sclerostin mAb',dose:'210 mg SC monthly × 12 months then antiresorptive',note:'ARCH: 48% ↓vertebral, 38% ↓hip. Black box: MACE. CONTRAINDICATED MI/stroke in prior year. 12-month course only.',trials:['ARCH'],flags:['MACE black box','CI if MI/stroke past year'],ref:'Ye C et al. Lancet 2025;406:2003.'},
+]},
+{cat:'endo',condition:'Contraception',sub:'USMEC 2024; ACOG 2025; JAMA 2021 Teal review; AFP 2022',drugs:[
+{n:'Levonorgestrel IUD 52 mg (Mirena)',l:1,cls:'Progestin IUD (LARC)',dose:'Provider-inserted; 5–8 years FDA; effective 12+ years',note:'>99% efficacy. Amenorrhea 20–50% at 1 year. FDA-approved heavy menstrual bleeding. Expulsion 2–10%.',trials:['USMEC 2024'],flags:['>99% effective','Heavy period benefit'],ref:'Teal S et al. JAMA 2021;326(24):2507. Nguyen AT et al. MMWR 2024;73(4):1.'},
+{n:'Etonogestrel implant (Nexplanon)',l:1,cls:'Subdermal progestin implant (LARC)',dose:'68 mg rod upper arm; FDA 3 years; effective 5 years',note:'Most effective reversible contraception (>99%). Irregular bleeding — counsel thoroughly.',trials:[],flags:['Most effective reversible'],ref:'Teal S et al. JAMA 2021;326:2507.'},
+{n:'Copper IUD (Paragard)',l:1,cls:'Non-hormonal LARC',dose:'FDA 10 years; effective 12+ years',note:'Hormone-free. May worsen dysmenorrhea/menorrhagia — counsel. Most effective EC if inserted within 5 days.',trials:[],flags:['Hormone-free','EC within 5 days'],ref:'Teal S et al. JAMA 2021;326:2507.'},
+{n:'Combined OCP',l:2,cls:'Estrogen + progestin',dose:'1 tab daily; 21/7 or 24/4 or continuous',note:'Typical-use failure 9%. CONTRAINDICATIONS USMEC Cat 4: migraine with aura, VTE hx, uncontrolled HTN ≥160/100, smoking ≥15/day age ≥35.',trials:['USMEC 2024'],flags:['9% typical use','CI: migraine with aura','CI: VTE/uncontrolled HTN'],ref:'Teal S et al. JAMA 2021;326:2507. Nguyen AT et al. MMWR 2024;73(4):1.'},
+{n:'Norethindrone (progestin-only pill)',l:2,cls:'POP (minipill)',dose:'0.35 mg daily; strict 3-hour window',note:'Safe: breastfeeding, estrogen CI, VTE hx, migraine with aura. 3-hour timing window CRITICAL.',trials:[],flags:['3-hr window critical','Breastfeeding safe'],ref:'Teal S et al. JAMA 2021;326:2507.'},
+{n:'Ulipristal 30 mg (Ella)',l:1,cls:'Emergency contraception (EC)',dose:'30 mg single dose within 120 hours',note:'Most effective oral EC — superior to levonorgestrel, especially BMI >30 and 72–120h. Rx required.',trials:[],flags:['Superior to Plan B at 72-120h','BMI >30 preferred'],ref:'Paradise SL et al. AFP 2022;106:251.'},
+{n:'Levonorgestrel (Plan B)',l:2,cls:'Emergency contraception (EC)',dose:'1.5 mg single dose; effective up to 72h',note:'OTC. Less effective BMI >30 or >72h.',trials:[],flags:['OTC','Less effective BMI >30'],ref:'Paradise SL et al. AFP 2022;106:251.'},
+]},
+{cat:'endo',condition:'Menopause — vasomotor symptoms',sub:'JAMA 2023 Crandall; JAMA Intern Med 2025 non-hormonal; AFP 2023',drugs:[
+{n:'Transdermal estradiol patch',l:1,cls:'Transdermal estrogen (preferred)',dose:'0.025–0.1 mg/day patch (once or twice weekly)',note:'Most efficacious VMS (~75% hot flash reduction). Lower VTE risk vs oral estrogen. Add progestogen if intact uterus.',trials:[],flags:['Lower VTE than oral','Add progestogen if uterus'],ref:'Crandall CJ et al. JAMA 2023;329(5):405.'},
+{n:'Micronized progesterone (Prometrium)',l:1,cls:'Progestogen (with estrogen)',dose:'100 mg daily continuous or 200 mg ×12 days/month cyclic',note:'Preferred progestogen. Required with estrogen if uterus intact.',trials:[],flags:['Preferred progestogen'],ref:'Crandall CJ et al. JAMA 2023;329:405.'},
+{n:'Fezolinetant (Veozah)',l:2,cls:'NK3 receptor antagonist (non-hormonal)',dose:'45 mg once daily',note:'FDA-approved May 2023 VMS. 20–25% reduction vs placebo. Black box: hepatotoxicity. LFTs baseline + monthly ×3.',trials:['SKYLIGHT'],flags:['FDA 2023 non-hormonal','Hepatotoxicity black box','LFTs monthly ×3'],ref:'Huang AJ et al. JAMA Intern Med 2025;185:874.'},
+{n:'Paroxetine 7.5 mg (Brisdelle)',l:2,cls:'SSRI (FDA-approved for VMS only)',dose:'7.5 mg daily',note:'Only FDA-approved SSRI for VMS. 10–25% reduction. Do NOT use with tamoxifen.',trials:[],flags:['FDA VMS approved','Do NOT use with tamoxifen'],ref:'Crandall CJ et al. JAMA 2023;329:405.'},
+{n:'Vaginal estradiol (low-dose)',l:1,cls:'Local vaginal estrogen (GSM)',dose:'0.5–1 g cream 1–3x/week; or 10 mcg tablet twice weekly',note:'GSM first-line local option. Minimal systemic absorption. Safe post-breast cancer (discuss with oncologist).',trials:[],flags:['GSM first-line local','Minimal systemic'],ref:'Crandall CJ et al. JAMA 2023;329:405.'},
+]},
+{cat:'derm',condition:'Acne vulgaris — stepwise',sub:'AAD 2024 guidelines; JAMA 2021 review; NEJM 2018',drugs:[
+{n:'Adapalene 0.1% gel (Differin)',l:1,cls:'Topical retinoid',dose:'Apply once daily at bedtime (OTC)',note:'AAD 2024 strong recommendation. Comedolytic. Start q other day to minimize irritation. Photosensitivity.',trials:['AAD 2024'],flags:['OTC available','8-12 wks for response'],ref:'Reynolds RV et al. JAAD 2024;90(5):1006.'},
+{n:'Benzoyl peroxide 2.5–10%',l:1,cls:'Topical antimicrobial',dose:'Apply once or twice daily',note:'No bacterial resistance. Backbone of combination therapy. Bleaches fabric.',trials:['AAD 2024'],flags:['No bacterial resistance','Bleaches fabric'],ref:'Reynolds RV et al. JAAD 2024;90(5):1006.'},
+{n:'Clindamycin 1% / BPO 5% (Duac)',l:1,cls:'Topical antibiotic + BPO',dose:'Apply once or twice daily',note:'Never use topical antibiotics as monotherapy (resistance). Always combine with BPO.',trials:['AAD 2024'],flags:['Never antibiotic monotherapy'],ref:'Reynolds RV et al. JAAD 2024;90(5):1006.'},
+{n:'Doxycycline',l:2,cls:'Oral antibiotic',dose:'50–100 mg daily or BID; limit 3–4 months',note:'Moderate-severe inflammatory acne. Photosensitivity. Limit 3–4 months. Always combine topical retinoid + BPO.',trials:['AAD 2024'],flags:['Max 3-4 months'],ref:'Reynolds RV et al. JAAD 2024;90(5):1006.'},
+{n:'Spironolactone',l:2,cls:'Anti-androgen (females)',dose:'25–200 mg daily (typically 50–100 mg)',note:'Adult female hormonal acne. Teratogenic — reliable contraception required.',trials:[],flags:['Females only','Teratogenic — contraception'],ref:'Reynolds RV et al. JAAD 2024;90(5):1006.'},
+{n:'Isotretinoin (Accutane)',l:3,cls:'Oral retinoid',dose:'0.5–1 mg/kg/day ×15–20 weeks (cumulative 120–150 mg/kg)',note:'AAD 2024 strong recommendation severe/nodulocystic. 85% long-term remission. iPLEDGE REMS. Monthly pregnancy test.',trials:['AAD 2024'],flags:['iPLEDGE REMS','85% remission','Monthly pregnancy test'],ref:'Reynolds RV et al. JAAD 2024;90(5):1006.'},
+]},
+{cat:'derm',condition:'Atopic dermatitis and plaque psoriasis',sub:'AAD guidelines; NEJM 2021 AD; Lancet 2025 psoriasis; JAAD 2024/2028',drugs:[
+{n:'Mid-potency TCS (triamcinolone 0.1%)',l:1,cls:'Topical corticosteroid',dose:'Once daily; trunk/extremities (as effective as BID)',note:'OR 8.15 vs vehicle (Cochrane). Most effective topical AD. Proactive maintenance 2–3x/week to prevent flares.',trials:['Cochrane TCS OR 8.15'],flags:['Most effective topical','Proactive maintenance option'],ref:'Davis DMR et al. JAAD 2028. Guttman-Yassky E et al. Lancet 2025;405:583.'},
+{n:'Tacrolimus ointment',l:2,cls:'Topical calcineurin inhibitor',dose:'0.03% age ≥2; 0.1% adults; apply BID',note:'Steroid-sparing. Face/eyelids/genitals safe. No atrophy. No increased malignancy in large cohort studies.',trials:[],flags:['No atrophy','Black box (not confirmed in cohorts)'],ref:'Davis DMR et al. JAAD 2028.'},
+{n:'Dupilumab (Dupixent)',l:1,cls:'Anti-IL-4Ra biologic (moderate-severe AD)',dose:'600 mg SC loading → 300 mg q2wk',note:'AAD strong recommendation. ~40% EASI-75 at 16 weeks. No lab monitoring. Conjunctivitis 10–20%.',trials:['SOLO-1','SOLO-2'],flags:['AAD strong recommendation','No lab monitoring'],ref:'Drucker AM. JAMA 2025;334:1103.'},
+{n:'Upadacitinib (Rinvoq)',l:2,cls:'JAK inhibitor (oral)',dose:'15–30 mg once daily',note:'EASI-75 ~70% at 12 weeks. Rapid itch relief. Black box: serious infections, malignancy, MACE, VTE.',trials:['Measure Up 1 & 2'],flags:['EASI-75 ~70%','Black box: infections/MACE/VTE'],ref:'Davis DMR et al. JAAD 2028.'},
+{n:'Clobetasol 0.05% (super-high potency)',l:1,cls:'Topical corticosteroid (psoriasis)',dose:'Apply BID ×2 weeks; limited BSA',note:'Psoriasis mild. HPA suppression with extensive use. Not for face/folds.',trials:[],flags:['Max 2 weeks continuous'],ref:'Armstrong AW et al. JAMA 2020;323:1945.'},
+{n:'Risankizumab (Skyrizi)',l:1,cls:'IL-23 inhibitor biologic (psoriasis)',dose:'150 mg SC weeks 0, 4, then q12wk',note:'PASI 90 rates 70–80% — highest-efficacy class for psoriasis. IL-23 inhibitors preferred per 2025 AAD-NPF.',trials:['UltIMMa-1','UltIMMa-2'],flags:['PASI 90 ~70-80%','Preferred class'],ref:'Armstrong AW et al. Nat Rev Dis Primers 2025;11:45.'},
+{n:'Secukinumab (Cosentyx)',l:1,cls:'IL-17A inhibitor biologic (psoriasis)',dose:'300 mg weekly ×5 doses then q4wk',note:'PASI 90 60–80%. Fast onset. Candidiasis. Avoid in IBD.',trials:['ERASURE','FIXTURE'],flags:['Fast onset','Avoid IBD'],ref:'Armstrong AW et al. Nat Rev Dis Primers 2025;11:45.'},
+{n:'Methotrexate',l:2,cls:'Antifolate DMARD',dose:'7.5–25 mg weekly + folic acid 1 mg daily',note:'Moderate-severe psoriasis; 3rd-line AD. Monitor CBC/LFTs/Cr. Teratogenic.',trials:[],flags:['Teratogenic','Monitor CBC/LFTs'],ref:'Armstrong AW et al. JAMA 2020;323:1945.'},
+]},
+{cat:'infect',condition:'Community-acquired pneumonia (outpatient)',sub:'IDSA/ATS 2019; NEJM 2023; JAMA 2024',drugs:[
+{n:'Amoxicillin 1 g TID',l:1,cls:'Aminopenicillin',dose:'1 g orally TID × 5 days',note:'IDSA/ATS 2019 first choice: healthy adult, no comorbidities, no antibiotics within 3 months, Strep resistance <25%. 5 days non-inferior.',trials:['IDSA/ATS 2019'],flags:['IDSA/ATS 1st choice','5 days sufficient'],ref:'Metlay JP et al. AJRCCM 2019;200(7):e45. Vaughn VM et al. JAMA 2024;332:1282.'},
+{n:'Doxycycline',l:1,cls:'Tetracycline',dose:'100 mg BID × 5 days',note:'Alternative monotherapy; atypical coverage (Mycoplasma, Chlamydophila, Legionella). Photosensitivity.',trials:['IDSA/ATS 2019'],flags:['Atypical coverage','Photosensitivity'],ref:'Metlay JP et al. AJRCCM 2019;200:e45.'},
+{n:'Amox-clav + doxycycline (comorbidities)',l:2,cls:'Protected penicillin + tetracycline',dose:'875/125 mg BID + doxycycline 100 mg BID × 5–7 days',note:'IDSA/ATS comorbid patients (DM, COPD, CHF, CKD, prior antibiotic ×3mo). Fluoroquinolone-sparing.',trials:['IDSA/ATS 2019'],flags:['Comorbid patients','Fluoroquinolone sparing'],ref:'Metlay JP et al. AJRCCM 2019;200:e45.'},
+{n:'Levofloxacin 750 mg',l:2,cls:'Respiratory fluoroquinolone',dose:'750 mg daily × 5 days',note:'Alternative comorbid or true beta-lactam allergy. Reserve — tendon, QTc, resistance selection.',trials:['IDSA/ATS 2019'],flags:['Reserve for allergy/comorbid','Tendon + QTc risk'],ref:'Metlay JP et al. AJRCCM 2019;200:e45.'},
+{n:'Azithromycin',l:2,cls:'Macrolide',dose:'500 mg day 1, then 250 mg × 4 days',note:'Increasing Strep resistance (up to 30% Michigan). QTc risk. Only if doxycycline not tolerated.',trials:[],flags:['Resistance concern Michigan'],ref:'Lee RA et al. Ann Intern Med 2021;174:822.'},
+]},
+{cat:'infect',condition:'UTI — uncomplicated cystitis',sub:'IDSA/ACP guidelines; AFP 2024 rapid evidence review',drugs:[
+{n:'Nitrofurantoin macrocrystals (Macrobid)',l:1,cls:'Nitrofuran antibiotic',dose:'100 mg BID × 5 days',note:'IDSA first-line. Avoid eGFR<30. NOT for pyelonephritis. Safe in pregnancy (avoid near term).',trials:['IDSA guideline'],flags:['IDSA first-line','Not for pyelonephritis','Avoid eGFR <30'],ref:'Kurotschka PK et al. AFP 2024;109(2):167.'},
+{n:'Fosfomycin 3 g (Monurol)',l:1,cls:'Phosphonic antibiotic',dose:'3 g single dose in water',note:'Single dose — excellent adherence. ESBL E. coli coverage.',trials:[],flags:['Single dose','ESBL coverage'],ref:'Kurotschka PK et al. AFP 2024;109(2):167.'},
+{n:'TMP-SMX DS (Bactrim)',l:1,cls:'Sulfonamide + DHFR inhibitor',dose:'160/800 mg BID × 3 days',note:'Avoid if local resistance >20% (Michigan ~15–20%). Hyperkalemia in CKD or with ACEi. Avoid 3rd trimester.',trials:[],flags:['Avoid if resistance >20%','Hyperkalemia with ACEi'],ref:'Kurotschka PK et al. AFP 2024;109(2):167.'},
+{n:'Pivmecillinam (Pivya)',l:1,cls:'Penicillin-class (new 2025)',dose:'400 mg TID × 3 days',note:'FDA-approved 2025. New option for uncomplicated UTI.',trials:[],flags:['FDA 2025 new approval'],ref:'FDA Orange Book 2026.'},
+{n:'Ciprofloxacin',l:2,cls:'Fluoroquinolone',dose:'500 mg BID × 3–7 days (7 days pyelonephritis)',note:'Reserve for complicated UTI/pyelonephritis. Avoid uncomplicated (resistance selection, AE).',trials:[],flags:['Reserve complex/pyelo only'],ref:'Kurotschka PK et al. AFP 2024;109(2):167.'},
+{n:'Phenazopyridine',l:1,cls:'Urinary analgesic only',dose:'200 mg TID × max 2 days',note:'OTC. Symptom relief ONLY — NOT antibiotic. Orange/red urine. Max 2 days.',trials:[],flags:['NOT antibiotic','Max 2 days','Orange urine — warn'],ref:'Kurotschka PK et al. AFP 2024;109(2):167.'},
+]},
+{cat:'infect',condition:'STIs — CDC 2021 guidelines',sub:'CDC 2021 STI Treatment Guidelines; Calhoun County high chlamydia rates',drugs:[
+{n:'Doxycycline ×7 days (chlamydia)',l:1,cls:'Tetracycline',dose:'100 mg BID × 7 days',note:'CDC 2021: preferred over azithromycin (higher cure rates).',trials:['CDC 2021'],flags:['Preferred over azithromycin 2021'],ref:'Dalby J et al. AFP 2022;105(5):514.'},
+{n:'Ceftriaxone 500 mg IM (gonorrhea)',l:1,cls:'3rd gen cephalosporin',dose:'500 mg IM single dose (1 g if >150 kg)',note:'CDC 2021: increased to 500 mg. Azithromycin co-treatment NO LONGER recommended.',trials:['CDC 2021'],flags:['CDC 2021: 500 mg dose','No azithromycin co-Rx'],ref:'Dalby J et al. AFP 2022;105:514.'},
+{n:'Benzathine penicillin G (syphilis)',l:1,cls:'Long-acting penicillin',dose:'2.4 million units IM ×1 (primary/secondary); ×3 weekly (late latent)',note:'Only treatment. In-office IM. Michigan DHHS reporting required.',trials:['CDC 2021'],flags:['Mandatory reporting MI','In-office IM only'],ref:'Dalby J et al. AFP 2022;105:514.'},
+{n:'Metronidazole (BV/trichomoniasis)',l:1,cls:'Nitroimidazole',dose:'BV: 500 mg BID ×7 days. Trich women: 500 mg BID ×7 days. Trich men: 2 g single dose',note:'CDC 2021: 7-day regimen now preferred for women with trichomoniasis. Avoid alcohol 24–48h.',trials:['CDC 2021'],flags:['7-day now preferred Trich women','Avoid alcohol 24-48h'],ref:'Dalby J et al. AFP 2022;105:514.'},
+{n:'Valacyclovir (HSV)',l:1,cls:'Antiviral',dose:'First: 1 g BID ×7–10 days. Recurrent: 500 mg BID ×3 days. Suppression: 500 mg daily',note:'Suppressive therapy reduces transmission. CKD dose adjust.',trials:[],flags:['Suppression reduces transmission'],ref:'Klein DA et al. AFP 2022;105:553.'},
+]},
+{cat:'infect',condition:'COVID-19 / influenza — outpatient antiviral',sub:'IDSA 2025 COVID; ACP versions 1–3; Lancet 2022 influenza',drugs:[
+{n:'Nirmatrelvir/ritonavir (Paxlovid)',l:1,cls:'Protease inhibitor + CYP3A4 inhibitor',dose:'300/100 mg BID × 5 days; start ≤5 days; CrCl 30–60: 150/100 mg BID',note:'IDSA 2025 preferred first-line outpatient COVID high-risk. Full FDA approval adults. Check covid19-druginteractions.org. CI CrCl<30.',trials:['EPIC-HR'],flags:['CYP3A4 DDIs — check interactions','Start within 5 days','CI CrCl <30'],ref:'IDSA 2025 CPG COVID. Qaseem A et al. Ann Intern Med 2026.'},
+{n:'Molnupiravir',l:2,cls:'Nucleoside analog',dose:'800 mg BID × 5 days',note:'ACP: probably improves recovery; no significant mortality benefit. EUA only. Avoid pregnancy.',trials:['MOVe-OUT'],flags:['EUA only','Avoid pregnancy'],ref:'Qaseem A et al. Ann Intern Med 2026. Saravolatz LD et al. CID 2023;76:165.'},
+{n:'Oseltamivir (Tamiflu)',l:1,cls:'Neuraminidase inhibitor',dose:'75 mg BID × 5 days; start within 48h',note:'76% reduction hospitalizations high-risk. Start within 48h. Safe in pregnancy. Nausea/vomiting SE.',trials:['Uyeki TM et al.'],flags:['Start within 48h','76% ↓hospitalization high-risk','Safe in pregnancy'],ref:'Uyeki TM et al. Lancet 2022;400:693.'},
+{n:'Baloxavir (Xofluza)',l:2,cls:'Cap-dependent endonuclease inhibitor',dose:'40 mg if 40–<80 kg; 80 mg if ≥80 kg — single dose',note:'CAPSTONE-2: single dose; faster viral clearance. ~5% resistance. Not in pregnancy.',trials:['CAPSTONE-2'],flags:['Single dose','Not in pregnancy'],ref:'Ison MG et al. Lancet Infect Dis 2020;20:1204.'},
+]},
+{cat:'uro',condition:'Benign prostatic hyperplasia (BPH)',sub:'JAMA 2025 LUTS review; AFP 2023; network meta-analyses',drugs:[
+{n:'Tamsulosin',l:1,cls:'Alpha-1A adrenergic blocker',dose:'0.4–0.8 mg daily at bedtime',note:'IPSS improvement 5–10 points. Onset 3–7 days. IFIS — MUST inform ophthalmologist before eye surgery. Retrograde ejaculation 8–28%.',trials:['Network meta-analysis'],flags:['Onset 3-7 days','IFIS — inform ophthalmology'],ref:'Wei JT et al. JAMA 2025;334(9):809.'},
+{n:'Tadalafil 5 mg daily',l:1,cls:'PDE5 inhibitor',dose:'5 mg once daily',note:'Dual FDA: BPH + ED. Network meta-analysis: alpha-blocker + PDE5i ranked highest IPSS improvement. Avoid nitrates.',trials:['Network meta-analysis'],flags:['Dual BPH+ED FDA','Highest combination efficacy'],ref:'Wei JT et al. JAMA 2025;334(9):809.'},
+{n:'Finasteride',l:2,cls:'5-alpha reductase inhibitor type 2',dose:'5 mg daily; full effect 6–12 months',note:'IPSS improvement 3–4 points. PSA halved — multiply ×2 for true PSA. Prevents disease progression. Teratogenic.',trials:['PLESS','CombAT'],flags:['PSA halved × 2','Teratogenic — no female handling'],ref:'Wei JT et al. JAMA 2025;334(9):809.'},
+{n:'Dutasteride',l:2,cls:'5-ARI dual (type 1+2)',dose:'0.5 mg daily',note:'CombAT: tamsulosin + dutasteride superior to monotherapy.',trials:['CombAT'],flags:['Dual 5-ARI','CombAT combination superior'],ref:'Wei JT et al. JAMA 2025;334(9):809.'},
+]},
+{cat:'uro',condition:'Overactive bladder / urge incontinence',sub:'JAMA 2017 Lukacz; AGS Beers 2025; beta-3 agonists preferred in elderly',drugs:[
+{n:'Mirabegron (Myrbetriq)',l:1,cls:'Beta-3 adrenergic agonist',dose:'25 mg daily → 50 mg daily',note:'AGS Beers 2025: safer than antimuscarinics in older adults. No anticholinergic effects. BP increase 8–11%. CYP2D6 inhibitor.',trials:[],flags:['AGS Beers: preferred elderly','No anticholinergic','BP monitoring'],ref:'Lukacz ES et al. JAMA 2017;318:1592. Steinman MA. JAGS 2025;73:2657.'},
+{n:'Vibegron (Gemtesa)',l:1,cls:'Beta-3 adrenergic agonist',dose:'75 mg daily',note:'Also approved OAB in men on BPH therapy. Fewer CYP DDIs than mirabegron.',trials:[],flags:['Fewer DDIs than mirabegron','Also for men on BPH Rx'],ref:'Wei JT et al. JAMA 2025;334(9):809.'},
+{n:'Solifenacin (Vesicare)',l:2,cls:'Muscarinic M3 antagonist',dose:'5–10 mg daily',note:'More bladder-selective. Less dry mouth than oxybutynin. Beers moderate risk elderly.',trials:[],flags:['Beers moderate risk elderly'],ref:'Lukacz ES et al. JAMA 2017;318:1592.'},
+{n:'Oxybutynin ER',l:3,cls:'Muscarinic antagonist',dose:'5–30 mg daily (ER)',note:'AGS Beers 2025: AVOID in older adults. Highest anticholinergic burden — cognitive impairment, falls, delirium.',trials:[],flags:['AVOID elderly (Beers 2025)','Highest anticholinergic burden'],ref:'Steinman MA. JAGS 2025;73:2657.'},
+{n:'Desmopressin (DDAVP)',l:2,cls:'ADH analogue (nocturia)',dose:'0.1–0.2 mg PO at bedtime; 50 mcg SL (Nocdurna)',note:'Nocturia ≥2 voids/night. Hyponatremia risk elderly >65 — check Na+ 3 and 7 days post-start.',trials:[],flags:['Hyponatremia elderly risk','Na+ check 3+7 days'],ref:'Wei JT et al. JAMA 2025;334(9):809.'},
+]},
+{cat:'uro',condition:'CKD progression — pharmacologic approach',sub:'KDIGO 2024; KDOQI Ann Intern Med 2025; AHA CKM 2023',drugs:[
+{n:'Lisinopril / Losartan (RAS inhibitor)',l:1,cls:'ACE inhibitor / ARB',dose:'Lisinopril 2.5–40 mg; losartan 25–100 mg — uptitrate max tolerated',note:'KDIGO 2024 first-line CKD + HTN + albuminuria. Tolerate eGFR dip 30%. Monitor K+/Cr 1–2 wks after initiation.',trials:['RENAAL','IDNT','AASK'],flags:['eGFR dip 30% acceptable','K+/Cr monitoring'],ref:'Navaneethan SD et al. AJKD 2025;85:135.'},
+{n:'Dapagliflozin (CKD)',l:1,cls:'SGLT2 inhibitor',dose:'10 mg daily; initiate if eGFR ≥20',note:'DAPA-CKD: 39% ↓composite kidney outcome. Meta-analysis 13 RCTs: 37% ↓CKD progression (RR 0.63). Benefits with or without DM. KDIGO 2024.',trials:['DAPA-CKD','EMPA-KIDNEY','CREDENCE'],flags:['eGFR ≥20 initiation','KDIGO 2024','37% ↓CKD progression'],ref:'Navaneethan SD et al. AJKD 2025;85:135. Song RM et al. JAMA 2025;334(7):629.'},
+{n:'Finerenone (Kerendia)',l:2,cls:'Non-steroidal MRA',dose:'eGFR ≥60: 20 mg daily; eGFR 25–59: 10 mg → titrate 20 mg',note:'FIDELIO-DKD + FIGARO-DKD: 18% ↓kidney, 13% ↓CV composite. T2DM + CKD + UACR ≥30. K+ ≤5.0 required.',trials:['FIDELIO-DKD','FIGARO-DKD'],flags:['T2DM+CKD indication','K+ ≤5.0 required'],ref:'Navaneethan SD et al. AJKD 2025;85:135.'},
+{n:'Sodium bicarbonate',l:2,cls:'Alkalinizing agent',dose:'325–650 mg TID; titrate to HCO3 22–26',note:'BICARB-4-CKD: slows CKD progression. HCO3 <22 indication. Monitor BP/edema (Na load).',trials:['BICARB-4-CKD'],flags:['HCO3 <22 indication','Na load — monitor BP'],ref:'Navaneethan SD et al. AJKD 2025;85:135.'},
+]},
+];
+
+let curCat='all';
+
+function buildTabs(){
+  const el=document.getElementById('tabs'); el.innerHTML='';
+  const a=document.createElement('button');
+  a.className='tab'+(curCat==='all'?' active':'');
+  a.textContent='All';
+  if(curCat==='all') a.style.background='#444';
+  a.onclick=()=>{curCat='all';render();};
+  el.appendChild(a);
+  CATS.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='tab'+(curCat===c.id?' active':'');
+    b.textContent=c.label;
+    if(curCat===c.id) b.style.background=c.dot;
+    b.onclick=()=>{curCat=c.id;render();};
+    el.appendChild(b);
+  });
+}
+
+function pillStyle(l){return{bg:L[l-1].bg,c:L[l-1].c,bd:L[l-1].bd,dot:L[l-1].dot};}
+
+function render(){
+  buildTabs();
+  const body=document.getElementById('body'); body.innerHTML='';
+  const q=document.getElementById('srch').value.toLowerCase().trim();
+  const lf=document.getElementById('lf').value;
+  let data=[...DATA];
+  if(curCat!=='all') data=data.filter(d=>d.cat===curCat);
+  if(q) data=data.filter(d=>
+    d.condition.toLowerCase().includes(q)||
+    d.sub.toLowerCase().includes(q)||
+    d.drugs.some(dr=>dr.n.toLowerCase().includes(q)||dr.cls.toLowerCase().includes(q))
+  );
+  if(lf!=='all') data=data.filter(d=>d.drugs.some(dr=>String(dr.l)===lf));
+  if(!data.length){body.innerHTML='<div class="empty">No results found — try a different search or category.</div>';return;}
+  const groups={};
+  CATS.forEach(c=>{const items=data.filter(d=>d.cat===c.id);if(items.length)groups[c.id]=items;});
+  Object.entries(groups).forEach(([catId,items])=>{
+    const cat=CATS.find(c=>c.id===catId);
+    const sec=document.createElement('div'); sec.className='section';
+    sec.innerHTML=`<div class="sec-hdr"><div class="sec-dot" style="background:${cat.dot}"></div><span class="sec-title">${cat.label}</span><span class="sec-count">${items.length} condition${items.length>1?'s':''}</span></div>`;
+    items.forEach(item=>{
+      let drugs=[...item.drugs];
+      if(lf!=='all') drugs=drugs.filter(dr=>String(dr.l)===lf);
+      if(!drugs.length) return;
+      const card=document.createElement('div'); card.className='cond-card';
+      const hdr=document.createElement('div'); hdr.className='cond-hdr';
+      const left=document.createElement('div'); left.className='cond-left';
+      left.style.background=cat.bg; left.style.borderRight=`1px solid ${cat.bd}`;
+      left.innerHTML=`<div class="cond-name" style="color:${cat.tx}">${item.condition}</div><div class="cond-sub">${item.sub}</div>`;
+      const row=document.createElement('div'); row.className='cond-drugs';
+      drugs.sort((a,b)=>a.l-b.l).forEach(drug=>{
+        const ps=pillStyle(drug.l);
+        const pill=document.createElement('div'); pill.className='dpill';
+        pill.style.background=ps.bg; pill.style.color=ps.c; pill.style.borderColor=ps.bd;
+        const dot=document.createElement('span'); dot.className='ldot';
+        dot.style.background=ps.dot; dot.textContent=drug.l;
+        pill.textContent=drug.n; pill.appendChild(dot);
+        pill.onclick=(e)=>{
+          e.stopPropagation();
+          const did='d'+item.condition.replace(/\W/g,'')+'_'+drug.n.replace(/\W/g,'');
+          const ex=card.querySelector('.detail-wrap.open');
+          if(ex){const was=ex.id===did; ex.classList.remove('open'); ex.style.display='none'; if(was) return;}
+          let det=card.querySelector('#'+CSS.escape(did));
+          if(!det){
+            det=document.createElement('div'); det.className='detail-wrap'; det.id=did;
+            const ps2=pillStyle(drug.l); const ll=['First-line','Second-line','Third-line'][drug.l-1];
+            const trialsHtml=drug.trials&&drug.trials.length?`<div class="d-item d-full"><div class="d-label">Key trials</div><div class="trials">${drug.trials.map(t=>`<span class="trial-tag">${t}</span>`).join('')}</div></div>`:'';
+            const flagsHtml=drug.flags&&drug.flags.length?`<div class="d-item d-full"><div class="d-label">Key flags</div><div class="flags">${drug.flags.map(f=>`<span class="flag-tag" style="background:${ps2.bg};color:${ps2.c};border-color:${ps2.bd}">${f}</span>`).join('')}</div></div>`:'';
+            det.innerHTML=`<button class="d-close" onclick="this.closest('.detail-wrap').classList.remove('open');this.closest('.detail-wrap').style.display='none'">&#215;</button>
+<div class="d-name">${drug.n}</div>
+<div class="d-badge" style="background:${ps2.bg};color:${ps2.c};border-color:${ps2.bd}">${ll} &middot; ${drug.cls}</div>
+<div class="d-grid">
+<div class="d-item"><div class="d-label">Typical dose</div><div class="d-val d-dose">${drug.dose}</div></div>
+<div class="d-item"><div class="d-label">Condition</div><div class="d-val">${item.condition}</div></div>
+<div class="d-item d-full"><div class="d-label">Clinical notes</div><div class="d-val">${drug.note}</div></div>
+${trialsHtml}${flagsHtml}
+<div class="d-item d-full"><div class="d-ref">Source: ${drug.ref}</div></div>
+</div>`;
+            card.appendChild(det);
+          }
+          det.classList.add('open'); det.style.display='block';
+        };
+        row.appendChild(pill);
+      });
+      hdr.appendChild(left); hdr.appendChild(row); card.appendChild(hdr); sec.appendChild(card);
+    });
+    body.appendChild(sec);
+  });
+}
+render();
+</script>
+</body>
+</html>
